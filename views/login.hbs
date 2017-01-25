@@ -1,0 +1,17 @@
+<html> 
+<div>
+<form method = 'POST' action='/login' id='loginForm'>
+	<label name='email'>Email</label>
+    <input name='email'></input>
+    <label name = 'password'>Password</label>
+    <input name = 'password' type='password'></input>
+    <button type='submit'> Login </button>
+</form>
+<div id="messages">
+<p>{{messages}}</p>
+</div>
+</div>
+
+<a href = '/auth/google'>Login with Google</a>
+
+</html>
