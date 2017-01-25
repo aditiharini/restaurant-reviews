@@ -70,7 +70,8 @@ passport.use(new GoogleStrategy({
 		// 	return done(err, user);
 		// });
 		process.nextTick(function(){
-		  var username = profile.emails[0].value.replace('gmail.com', '');
+		  var username = profile.emails[0].value.replace('@gmail.com', '');
+		  console.log(username);
 		User.findOne({username:username}, function(err, user){
 			if (err){
 				return done(err);
