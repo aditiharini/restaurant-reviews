@@ -1,0 +1,165 @@
+<html>
+	<head>
+		<link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+		<link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	</head>
+
+	<body>	
+		<style>
+			fieldset, label { margin: 0; padding: 0; }
+			body{ margin: 20px; }
+			h1 { font-size: 1.5em; margin: 10px; }
+
+			/****** Style Star Rating Widget *****/
+
+			.rating { 
+			  border: none;
+			  float: left;
+			}
+
+			.rating > input { display: none; } 
+			.rating > label:before { 
+			  margin: 5px;
+			  font-size: 1.25em;
+			  font-family: FontAwesome;
+			  display: inline-block;
+			  content: "\f005";
+			}
+
+	/*		.rating > .half:before { 
+			  content: "\f089";
+			  position: absolute;
+			}*/
+
+			.rating > label { 
+			  color: #ddd; 
+			 float: right; 
+			}
+
+			/***** CSS Magic to Highlight Stars on Hover *****/
+
+			.rating > input:checked ~ label, /* show gold star when clicked */
+			.rating:not(:checked) > label:hover, /* hover current star */
+			.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+			.rating > input:checked + label:hover, /* hover current star when changing rating */
+			.rating > input:checked ~ label:hover,
+			.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+			.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+		</style>
+		<div class='container'>
+			<div class= 'row'>
+				<div class='col-md-4'>
+					<h2>Restaurant</h2>
+					<div class='form-group'>
+						<input class = 'form-control ' id='restaurant' placeholder='name'></input>
+					</div>
+				
+					<div class='form-group'>
+						<select class='form-control' id ='cuisine' >
+							<option value='Chinese'>Chinese</option>
+							<option value='American'>American</option>
+							<option value='Thai'>Thai</option>
+							<option value='Indian'>Indian</option>
+							<option value='Italian'>Italian</option>
+							<option value='French'>French</option>
+							<option value='Mexican'>Mexican</option>
+							<option value='Mediterranean'>Mediterranean</option>
+						</select>
+					</div>
+					<div class='form-group'>
+						<input class='form-control' placeholder='city' id='city'></input>
+					</div>
+					<div class='form-group'>
+						<input class='form-control' placeholder = 'state' id='state'></input>
+					</div>
+				
+					<h2>Rating</h2>
+					<div class = 'form-group'>
+						<fieldset class="form-control rating">
+						    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" ></label>
+						    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" ></label>
+						    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" ></label>
+						    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" ></label>
+						    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" ></label>
+						</fieldset>
+					</div>
+					<h2>Review</h2>
+					<div class = 'form-group'>
+						<textarea class='form-control' id='content'></textarea>
+					</div>
+					<div class='row'>
+						<button class='btn btn-primary' type=submit id='submitReview'>Post!</button>
+					</div>
+				</div>
+				<div class='col-md-2'>
+				</div>
+
+				<div class='col-md-4'
+					{{#if hasReviews}}
+						{{#each reviews}}
+							{{>review}}
+						{{/each}}
+						
+					{{else}}
+						<p>{{message}}</p>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+				$('#submitReview').click(function(){
+					var restaurant = $('#restaurant').val();
+					var cuisine = $('#cuisine').val();
+					var city = $('#city').val();
+					var state = $('#state').val();
+					var rating;
+					if($('#star1').is(':checked')){
+						rating=1;
+					}
+					if($('#star2').is(':checked')){
+						rating=2;
+					}
+					if($('#star3').is(':checked')){
+						rating=3;
+					}
+					if($('#star4').is(':checked')){
+						rating=4;
+					}
+					if($('#star5').is(':checked')){
+						rating=5;
+					}
+					var content = $('#content').val();
+					$.ajax({
+						type:'POST',
+						data:{restaurant:restaurant, cuisine:cuisine, city:city, state:state, rating:rating, content:content},
+						dataType:'json',
+						success:function(res){
+							console.log('got here');
+							if(res.message){
+								console.log(message);
+							}
+							if(res.newReview){
+								var review = JSON.stringify(res.newReview);
+								console.log(review);
+							}
+
+						}
+
+					});
+
+
+
+
+				});
+
+			});
+			
+		</script>
+
+	</body>
+</html>
