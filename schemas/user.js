@@ -14,7 +14,7 @@ var userSchema = new Schema({
 		vegan: Boolean, 
 		kosher: Boolean, 
 		halal: Boolean, 
-		nutAllergies: Boolean}
+		nutAllergies: Boolean},
 });
 userSchema.methods.generateHash = function(password){
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

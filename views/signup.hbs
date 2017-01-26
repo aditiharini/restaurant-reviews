@@ -9,31 +9,13 @@
 
 <body>  
     <div id=inputs>
-        <!-- <form method = 'POST' action = '/signup' id=signupform> -->
+            <label name='name' >Name</label>
+            <input id='name'></input>
         	<label name ='username'>Username</label>
         	<input id='username'></input>
         	<label name = 'password'>Password</label>
-        	<input id = 'password' type= 'password'></input>
-    <!--         <label name= 'location'>Location</label>
-        	<input id = 'location' type = 'text'></input> 
-            <label name='age'> Age </label>
-        	<input id = 'age' type = 'text'></input>
-            aren't the checkboxes the dietary restrictions? -->
-    <!--         <label name='dietaryrestrictions'> Dietary Restrictions</label>
-        	<input id = 'dietaryrestrictions' type = 'text'></input>
-        	
-        	<label> Vegetarian<input type = 'checkbox' id = 'vegetarian' value = 'vegetarian'>  </label>
-        	<label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan'> </label>
-        	<label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher'>  </label>
-        	<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal'>  </label>
-        	<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies'> </label>
-        	
-        	<label>Gender<input id = 'gender' type = 'text'> </input></label>
-        	<label>Ethnicity<input id = 'ethnicity' type = 'text'> </input></label>  -->
-        	
-        	
+        	<input id = 'password' type= 'password'></input>        	
         	<button type='submit' id='submitSignup'> Sign Up </button>
-            <!-- </form> -->
     	<div id=messages>
     	</div>
     </div>
@@ -45,45 +27,16 @@
     			$('#messages').empty();
     			var username = $('#username').val();
     			var password = $('#password').val();
-    			// var location = $('#location').val(); 
-    			// var age = $('#age').val();
-       //          var vegetarian = false;
-       //          var vegan = false;
-       //          var kosher = false;
-       //          var halal = false;
-       //          var nutAllergies = false;
-       //          // change to jquery for consistency
-    			// if (document.getElementById('vegetarian').checked) {
-    			//      vegetarian = true; 
-    			// }
-    			// if (document.getElementById('vegan').checked) {
-    			//     vegan = true; 
-    			// }
-    			// if (document.getElementById('kosher').checked) {
-    			//     kosher = true; 
-    			// } 
-    			// if (document.getElementById('halal').checked) { 
-    			//     halal = true; 
-    			// } 
-    			// if (document.getElementById('nutAllergies').checked) { 
-    			//     nutAllergies = true; 
-    			// }
-    			// var gender = $('#gender').val(); 
-    			// var ethnicity = $('#ethnicity').val(); 
+                var name = $('#name').val();
+
+
     			$.ajax({
     				type:'POST',
     				url:'/signup',
     				data: {username:username, 
-    				       password:password, 
-    				       // location: location, 
-    				       // age: age, 
-    				       // vegetarian: vegetarian, 
-    				       // vegan: vegan, 
-    				       // kosher: kosher,
-    				       // halal: halal, 
-    				       // nutAllergies: nutAllergies,
-    				       // ethnicity: ethnicity,
-    				       // gender: gender
+    				       password:password,
+                           name:name 
+    		
     				       
     				},
     				dataType:'json',
