@@ -19,8 +19,22 @@ router.get('/login', function(req, res, next){
 router.post('/login', passport.authenticate('local-login', {failureRedirect:'/login', successRedirect:'/search'}));
 
 router.get('/search', function(req, res, next){
-    res.render('search');
+    res.render('RestaurantSearch.hbs');
 });
+
+router.post ('/search', function(req, res, next) {
+	Review.find({restaurant: {
+                '$regex': request.body.name,
+                 $options: "i"
+    }}, function(err, reviews) {
+    	if (err) {
+    		throw err; 
+    	}
+    	res.send({
+    		data: reviews
+    	}); 
+    }); 
+}); 
 router.get('/settings', function(req, res, next){
     res.render('settings');
     

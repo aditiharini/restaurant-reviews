@@ -1,22 +1,192 @@
 <html>
 	<head>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	 <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<meta charset="utf-8"> 
+
 
 	</head>
 	<body>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	    <h1>Settings</h1>
-	    <label>Location <input id='location'></input</label>
-	    <label>Age <input id='age'></input></label>
-		<label>Gender<input id = 'gender' type = 'text'> </input></label>
-		<label>Ethnicity<input id = 'ethnicity' type = 'text'> </input></label>
-	    <h2>Dietary Restrictions</h2>
-	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian'></input></label>
-	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan'></input></label>
-	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher'></input></label>
-		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal'></input></label>
-		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies'></input></label>
-		<script type="text/javascript">
-			
+	    <br>
+
+	    <label>Location </label><br>
+	    <label> State </label>
+	    <div class = "dropdown">
+	    <button class = "btn btn-primary dropdown-toggle" type = "button" data-toggle = "dropdown" id = "State"> State
+	    <span class="caret"></span></button>
+	    <ul class="dropdown-menu" id= "state">
+	    	<li><a href="#"> AL </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> AK </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> AZ </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> AR </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> CA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> CO </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> CT </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> DE </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> FL </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> GA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> HI </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> ID </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> IL </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> IN </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> IA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> KS </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> KY </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> LA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> ME </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MD </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MI </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MN </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MS </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MO </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> MT </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NE </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NV </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NH </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NJ </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NM </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NY </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> NC </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> ND </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> OH </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> OK </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> OR </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> PA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> RI </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> SC </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> SD </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> TN </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> TX </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> UT </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> VT </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> WA </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> WV </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> WI </a></li>
+	    	<li class="divider"></li>
+	    	<li><a href="#"> WY </a></li>
+	    	<li class="divider"></li>
+	    </ul>
+		</div>
+		<br> 
+		<label> City <input id = "city" type = "text"> </input></label> <br><br>
+	    <label> Age <input id='age' oninput = 'ValidateAge()'></input></label> <br><br>
+
+	  <label> Gender </label> <input type="radio" name="gender" value="male"> Male <input type="radio" name="gender" value="female"> Female<br> <br>
+		<!-- Dropdown Trigger -->
+		<label> Ethnicity </label>
+		  <div class="dropdown">
+		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="ethnicity" >Ethnicity
+		  <span class="caret"></span></button>
+		  <ul class="dropdown-menu" id="Ethnicity">
+		    <li><a href="#">White</a></li>
+		    <li class="divider"></li>
+		    <li><a href="#">Hispanic or Latino</a></li>
+		    <li class="divider"></li>
+		    <li><a href="#">Black or African-American</a></li>
+		    <li class="divider"></li>
+			<li><a href="#">South Asian</a></li>
+			<li class="divider"></li>
+			<li><a href="#">East Asian</a></li>
+			<li class="divider"></li>
+			<li><a href="#">Italian</a></li>
+			<li class="divider"></li>
+			<li><a href="#">Native Hawaiian or Other Pacific Islander</a></li>
+			<li class="divider"></li>
+			<li><a href="#">American Indian or Alaska Native</a></li>
+
+		  </ul>
+		</div>
+		<br> 
+
+		<h3> Dietary Restrictions </h3>
+	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian'></input></label> <br> 
+	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan'></input></label> <br>
+	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher'></input></label> <br>
+		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal'></input></label><br>
+		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies'></input></label> <br> <br> <br> 
+
+		<button id = "submit" type='submit'>Save to Profile</button>
+		
+		<script>
+
+			$(function() {
+
+				$("#state li").click(function() {
+					$("#State:first-child").text($(this).text());
+      				$("#State:first-child").val($(this).text());
+				});
+
+				$("#Ethnicity li").click(function() {
+					$("#ethnicity:first-child").text($(this).text());
+      				$("#ethnicity:first-child").val($(this).text());
+				});
+			});
+
+			function ValidateAge() {
+				if (document.getElementById("age").value < 0 | document.getElementById("age").value > 120) {
+					alert ("Not a valid age. Please try again."); 
+				}
+			}
+
+
 		</script>
 	</body>
 
