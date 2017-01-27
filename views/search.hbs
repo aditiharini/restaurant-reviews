@@ -1,3 +1,77 @@
 <html>
-    <h1>Search Page</h1>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+
+	<meta charset="utf-8"> 
+    </head>
+    
+    <body>
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <script id="reviewTemplate" type="text/x-handlebars-template">
+	         <div class="review" id={{_id}}>
+				<div class='row panel panel-default'>
+					<div class='panel-heading'>
+						<h3 class='panel-title'>\{{restaurant}}</h3>
+					</div>
+					<div class='panel-body'>
+						<p class='info'><b>Location: </b>\{{location.city}}, \{{location.state}}</p>
+						<p class='info>'><b> Cuisine: </b> \{{cuisine}}</p>
+						<p class='info'><b>Rating: </b>\{{rating}}</p>
+						<p class='info'><b> Review: </b>\{{content}}</p>
+						<!-- <button class="btn btn-primary update" id={{_id}}>Update</button>
+						<button class = "btn btn-danger delete" id={{_id}}>Delete</button> -->
+					</div>
+				</div>
+			</div>
+		</script>
+
+		<div class='container'>
+			<div class='form-group'>
+        		<input type = "text" class='form-control' id = "search" placeholder="Search for a restaurant here..." oninput = "search()"></input>
+        	</div>
+
+			<div class='form-group' id='reviews'>
+			</div>
+		</div>
+        <script>
+            function search() {
+                $.ajax({
+                    type: 'POST', 
+                    url: '/search', 
+                    data: {
+                        name: $('#search').val(),
+                    },
+                    dataType: 'json', 
+                    success: function(data) {
+                    	console.log('got to ajax request');
+                    	var template = $('#reviewTemplate').html();
+                    	var compiledTemplate = Handlebars.compile(template);
+                        $('#reviews').empty();
+				        var restaurants = data.data;
+				        console.log(restaurants); 
+				        restaurants.forEach(function(restaurant) {
+				        	console.log(JSON.stringify(restaurant));
+				        	console.log(restaurant.restaurant);
+				        	var output = compiledTemplate(restaurant);
+				        	console.log(output);
+				        	$('#reviews').append(output);
+
+				        });
+                    }
+                });  
+            }
+            
+        </script>
+    </body>
+    
+    
 </html>

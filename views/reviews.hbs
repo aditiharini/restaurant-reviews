@@ -97,7 +97,7 @@
 				<div class='col-md-2'>
 				</div>
 
-				<div class='col-md-4'
+				<div class='col-md-6'>
 					{{#if hasReviews}}
 						{{#each reviews}}
 							{{>review}}
@@ -136,7 +136,7 @@
 					var content = $('#content').val();
 					$.ajax({
 						type:'POST',
-						data:{restaurant:restaurant, cuisine:cuisine, city:city, state:state, rating:rating, content:content},
+						data:{action:'create',restaurant:restaurant, cuisine:cuisine, city:city, state:state, rating:rating, content:content},
 						dataType:'json',
 						success:function(res){
 							console.log('got here');
@@ -152,10 +152,31 @@
 
 					});
 
+				});
+				$('.delete').click(function(){
+					var id = this.id;
+					$.ajax({
+						type:'POST',
+						data:{action:'delete', id:id},
+						dataType:'json',
+						success:function(res){
+							console.log('got here');
+							if(res.wasDeleted){
+								$('div#' + id + '.review').remove();
+							}
+							else{
+								alert("There was an error deleting this review");
+							}
 
+						}
 
+					});
 
 				});
+				// $('.update').click(function(){
+					
+
+				// });
 
 			});
 			
