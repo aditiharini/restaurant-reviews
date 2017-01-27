@@ -1,10 +1,15 @@
-<div class="review">
-	<div class='row'>
-		<p>{{restaurant}}</p>
-		<p>{{location.city}}, {{location.state}}</p>
-		<p>{{rating}}</p>
-		<p>{{content}}</p>
-		<button class="btn btn-primary update" id={{_id}}>Update</button>
-		<button class = "btn btn-danger delete" id={{_id}}>Delete</button>
+<div class="review" id={{_id}}>
+	<div class='row panel panel-default'>
+		<div class='panel-heading'>
+			<h3 class='panel-title'>{{restaurant}}</h3>
+		</div>
+		<div class='panel-body'>
+			<p class='info'><b>Location: </b>{{location.city}}, {{location.state}}</p>
+			<p class='info'><b>Rating: </b>{{rating}}</p>
+			<p class='info'><b> Review: </b>{{content}}</p>
+		
+			<button class="btn btn-primary update" id={{_id}}>Update</button>
+			<button class = "btn btn-danger delete" id={{_id}}>Delete</button>
+		</div>
 	</div>
 </div>

@@ -98,28 +98,64 @@ router.get('/reviews', function(req, res, next){
 	
 });
 router.post('/reviews', function(req, res, next){
-	var review = {
-		restaurant: req.body.restaurant,
-		cuisine: req.body.cuisine,
-		rating: req.body.rating,
-		author: req.user,
-		content: req.body.content,
-		location:{city:req.body.city, state:req.body.state}
-	};
-	Review.create(review, function(err, review){
-		if(err){
-			return res.send({message:err});
-		}
-		if(review){
-			return res.send({newReview:review});
-		}
-		return res.send({message:"unknown error"});
-	});
+	if(req.body.action=='create'){
+		var review = {
+			restaurant: req.body.restaurant,
+			cuisine: req.body.cuisine,
+			rating: req.body.rating,
+			author: req.user,
+			content: req.body.content,
+			location:{city:req.body.city, state:req.body.state}
+		};
+		Review.create(review, function(err, review){
+			if(err){
+				return res.send({message:err});
+			}
+			if(review){
+				return res.send({newReview:review});
+			}
+			return res.send({message:"unknown error"});
+		});
+	}
+	if(req.body.action=='delete'){
+		Review.remove({_id: req.body.id}, function(err){
+			if(err){
+				console.log(err);
+				res.send({wasDeleted: false, message:"There was an error deleting this review"});
+			}
+			else{
+				res.send({wasDeleted: true, message:"successfully deleted"});
+			}
+		});
+
+	}
 
 });
 router.get('/search', function(req, res, next){
 	res.render('search');
 
+});
+
+router.post('/search', function(req, res, next){
+	console.log('got to post');
+	Review.find({restaurant: {
+        $regex: req.body.name,
+         $options: "i"
+    }}, function(err, reviews) {
+    	if (err) {
+    		console.log(err);
+    		throw err; 
+    	}
+    	if(reviews){
+    		console.log(reviews);
+    		res.send({
+    		data: reviews
+    		});
+
+    	}
+    	
+ 
+    }); 
 });
 
 router.get('/logout', function(req, res){
