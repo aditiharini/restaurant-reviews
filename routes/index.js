@@ -12,19 +12,16 @@ router.get('/', function(req, res, next) {
 
 router.get('/login', function(req, res, next){
     
-    res.render('login');
+    res.render('login', {message:req.flash('loginMessage')});
     
 });
 
 router.post('/login', passport.authenticate('local-login', {failureRedirect:'/login', successRedirect:'/search'}));
 
-router.get('/search', function(req, res, next){
-    res.render('RestaurantSearch.hbs');
-});
 
 router.post ('/search', function(req, res, next) {
 	Review.find({restaurant: {
-                '$regex': request.body.name,
+                '$regex': req.body.name,
                  $options: "i"
     }}, function(err, reviews) {
     	if (err) {
@@ -35,12 +32,12 @@ router.post ('/search', function(req, res, next) {
     	}); 
     }); 
 }); 
-router.get('/settings', function(req, res, next){
+router.get('/settings', isLoggedIn, function(req, res, next){
     res.render('settings');
     
 });
 router.get('/signup', function(req, res, next){
-	res.render('signup');
+	res.render('signup', {message:req.flash('signupMessage')});
 });
 
 router.post('/signup', function(req, res, next){
@@ -57,11 +54,13 @@ router.post('/signup', function(req, res, next){
 		console.log('got here');
 		if(err){
 			console.log(err);
-			return res.send({message:"error please try again"});
+			req.flash('signupMessage', "There was an error. Please try again.");
+			return res.redirect('/signup');
 		}
 		if(user){
 			console.log(user);
-			return res.send({message:"username exists"});
+			req.flash('signupMessage', 'This username is taken');
+			return res.redirect('/signup');
 		
 		}
 		var newUser = new User();
@@ -71,10 +70,11 @@ router.post('/signup', function(req, res, next){
 		newUser.save(function(err){
 			if(err){
 				console.log(err);
-				return res.send({message:"error cannot save please try again"});
+				req.flash('signupMessage', 'There was an error. Please try again.');
+				return res.redirect('/signup');
 			}
 			else{
-				return res.send({redirect:'/login'});
+				return res.redirect('/login');
 			}
 			});
 		
@@ -92,7 +92,7 @@ router.get('/auth/google/callback',
 
 });
 
-router.get('/reviews', function(req, res, next){
+router.get('/reviews', isLoggedIn, function(req, res, next){
 	console.log(req.user);
 	Review.find({'author._id':req.user._id}, function(err, reviews){
 		if(err){
@@ -145,17 +145,23 @@ router.post('/reviews', function(req, res, next){
 	}
 
 });
-router.get('/search', function(req, res, next){
+router.get('/search', isLoggedIn, function(req, res, next){
 	res.render('search');
 
 });
 
 router.post('/search', function(req, res, next){
+	// this should filter by author of the review
+	// should add filter options to the search bar
 	console.log('got to post');
 	Review.find({restaurant: {
         $regex: req.body.name,
          $options: "i"
-    }}, function(err, reviews) {
+    }, 
+    'author.dietaryRestrictions.vegetarian':req.user.dietaryRestrictions.vegetarian,
+    'author.dietaryRestrictions.vegan':req.user.dietaryRestrictions.vegan,
+	'author.dietaryRestrictions.kosher':req.user.dietaryRestrictions.kosher,
+	'author.dietaryRestrictions.halal':req.user.dietaryRestrictions.halal}, function(err, reviews) {
     	if (err) {
     		console.log(err);
     		throw err; 

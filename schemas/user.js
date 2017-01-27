@@ -10,11 +10,12 @@ var userSchema = new Schema({
 	ethnicity: String,
 	location: String,
 	dietaryRestrictions: {
-		vegetarian: Boolean, 
-		vegan: Boolean, 
-		kosher: Boolean, 
-		halal: Boolean, 
-		nutAllergies: Boolean},
+		vegetarian: {type:Boolean, default:false}, 
+		vegan: {type:Boolean, default:false}, 
+		kosher: {type:Boolean, default:false}, 
+		halal: {type:Boolean, default:false}, 
+		nutAllergies: {type:Boolean, default:false}
+	}
 });
 userSchema.methods.generateHash = function(password){
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

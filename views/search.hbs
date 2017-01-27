@@ -15,6 +15,13 @@
     </head>
     
     <body>
+    	<style>
+	    	html, body{
+	    		margin:0px;
+	    		padding:0px;
+			}	
+    	</style>
+    	{{>sidenav}}
          <meta name="viewport" content="width=device-width, initial-scale=1">
          <script id="reviewTemplate" type="text/x-handlebars-template">
 	         <div class="review" id={{_id}}>
@@ -33,13 +40,28 @@
 				</div>
 			</div>
 		</script>
+		<div id='main'>
+			<div class='container'>
+				<div class='col-md-6'>
+					<div class='form-group'>
+		        		<input type = "text" class='form-control' id = "search" placeholder="Search for a restaurant here..." oninput = "search()"></input>
+		        	</div>
 
-		<div class='container'>
-			<div class='form-group'>
-        		<input type = "text" class='form-control' id = "search" placeholder="Search for a restaurant here..." oninput = "search()"></input>
-        	</div>
-
-			<div class='form-group' id='reviews'>
+					<div class='form-group' id='reviews'>
+					</div>
+				</div>
+				<div class='col-md-4'>
+					<div class='panel panel-default' id='filters'>
+						<div class='panel-heading'>
+							<h3 class='panel-title'>Filters</h3>
+						</div>
+						<div class='panel-body'>
+							<label><input type='checkbox' value='cuisine'></input>Cuisine(Ethnicity)</label>
+							<label><input type='checkbox' value='location'></input>Location(User lives in the area)</label>
+							<label><input type='checkbox' value= 'dietaryPreferences'></input>Dietary preferences</label>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
         <script>
