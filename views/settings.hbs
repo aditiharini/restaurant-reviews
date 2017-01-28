@@ -16,174 +16,209 @@
 	<body>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<div id = "reloadedPage">
+	</div>
 	    <h1>Settings</h1>
 	    <br>
 
 	    <label>Location </label><br>
 	    <label> State </label>
-	    <div class = "dropdown">
-	    <button class = "btn btn-primary dropdown-toggle" type = "button" data-toggle = "dropdown" id = "State"> State
-	    <span class="caret"></span></button>
-	    <ul class="dropdown-menu" id= "state">
-	    	<li><a href="#"> AL </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> AK </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> AZ </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> AR </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> CA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> CO </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> CT </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> DE </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> FL </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> GA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> HI </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> ID </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> IL </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> IN </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> IA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> KS </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> KY </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> LA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> ME </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MD </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MI </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MN </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MS </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MO </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> MT </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NE </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NV </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NH </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NJ </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NM </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NY </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> NC </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> ND </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> OH </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> OK </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> OR </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> PA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> RI </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> SC </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> SD </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> TN </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> TX </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> UT </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> VT </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> WA </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> WV </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> WI </a></li>
-	    	<li class="divider"></li>
-	    	<li><a href="#"> WY </a></li>
-	    	<li class="divider"></li>
-	    </ul>
-		</div>
+	    <select class="custom-select" id = "State">
+			<option id = "selected" select></option>
+		    <option value="AL">AL</option>
+		    <option value="AK">AK</option>
+		    <option value="AZ">AZ</option>
+		    <option value="AR">AR</option>
+		    <option value="CA">CA</option>
+		    <option value="CO">CO</option>
+		    <option value="CT">CT</option>
+		    <option value="DE">DE</option>
+		    <option value="FL">FL</option>
+		    <option value="GA">GA</option>
+		    <option value="HI">HI</option>
+		    <option value="ID">ID</option>
+		    <option value="IL">IL</option>
+		    <option value="IN">IN</option>
+		    <option value="IA">IA</option>
+		    <option value="KS">KS</option>
+		    <option value="KY">KY</option>
+		    <option value="LA">LA</option>
+		    <option value="ME">ME</option>
+		    <option value="MD">MD</option>
+		    <option value="MA">MA</option>
+		    <option value="MI">MI</option>
+		    <option value="MN">MN</option>
+		    <option value="MS">MS</option>
+		    <option value="MO">MO</option>
+		    <option value="MT">MT</option>
+		    <option value="NE">NE</option>
+		    <option value="NV">NV</option>
+		    <option value="NH">NH</option>
+		    <option value="NJ">NJ</option>
+		    <option value="NM">NM</option>
+		    <option value="NY">NY</option>
+		    <option value="NC">NC</option>
+		    <option value="ND">ND</option>
+		    <option value="OH">OH</option>
+		    <option value="OK">OK</option>
+		    <option value="OR">OR</option>
+		    <option value="PA">PA</option>
+		    <option value="RI">RI</option>
+		    <option value="SC">SC</option>
+		    <option value="SD">SD</option>
+		    <option value="TN">TN</option>
+		    <option value="TX">TX</option>
+		    <option value="UT">UT</option>
+		    <option value="VT">VT</option>
+		    <option value="VA">VA</option>
+		    <option value="WA">WA</option>
+		    <option value="WV">WV</option>
+		    <option value="WI">WI</option>
+		    <option value="WY">WY</option>
+		</select>
+
 		<br> 
+
 		<label> City <input id = "city" type = "text"> </input></label> <br><br>
-	    <label> Age <input id='age' oninput = 'ValidateAge()'></input></label> <br><br>
+	    <label> Age <input id='age' type = 'text' oninput = 'ValidateAge()'></input></label> <br><br>
 
-	  <label> Gender </label> <input type="radio" name="gender" value="male"> Male <input type="radio" name="gender" value="female"> Female<br> <br>
-		<!-- Dropdown Trigger -->
-		<label> Ethnicity </label>
-		  <div class="dropdown">
-		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="ethnicity" >Ethnicity
-		  <span class="caret"></span></button>
-		  <ul class="dropdown-menu" id="Ethnicity">
-		    <li><a href="#">White</a></li>
-		    <li class="divider"></li>
-		    <li><a href="#">Hispanic or Latino</a></li>
-		    <li class="divider"></li>
-		    <li><a href="#">Black or African-American</a></li>
-		    <li class="divider"></li>
-			<li><a href="#">South Asian</a></li>
-			<li class="divider"></li>
-			<li><a href="#">East Asian</a></li>
-			<li class="divider"></li>
-			<li><a href="#">Italian</a></li>
-			<li class="divider"></li>
-			<li><a href="#">Native Hawaiian or Other Pacific Islander</a></li>
-			<li class="divider"></li>
-			<li><a href="#">American Indian or Alaska Native</a></li>
+	  <label> Gender </label> <input type="radio" name="gender" value="male" id = "male"> Male <input type="radio" name="gender" value="female" id= "female"> Female<br> <br>
 
-		  </ul>
-		</div>
+		<select class="custom-select" id = "Ethnic">
+			<option id = "selected" select></option>
+		    <option value="White">White</option>
+		    <option value="Hispanic or Latino">Hispanic or Latino</option>
+		    <option value="Black or African-American">Black or African-American</option>
+		    <option value="South Asian">South Asian</option>
+		    <option value="East Asian">East Asian</option>
+		    <option value="Italian">Italian</option>
+		    <option value="Native American or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+		    <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+		</select>
+
+		<script>
+			$(document).ready(function(){
+				$.ajax({
+					type: 'POST', 
+					url: '/settings', 
+					data: {id: "ethnicity"}, 
+					dataType: 'json', 
+					success: function(data) {
+						var user = data.data; 
+						var ethnicity = user.ethnicity; 
+						var city = user.location.city; 
+						var state = user.location.state; 
+						var age = user.age; 
+						$("#Ethnic").val(ethnicity); 
+						$("#State").val(state); 
+						$("#city").val(city); 
+						$("#age").val(age); 
+						if (user.gender == "female") {
+      						document.getElementById("male").checked = false; 
+      						document.getElementById("female").checked = true; 
+      					}
+      					if (user.gender == "male") {
+      						document.getElementById("male").checked = true; 
+      						document.getElementById("female").checked = false; 
+      					}
+      					$("#vegetarian").prop('checked', user.dietaryRestrictions.vegetarian); 
+      					$("#vegan").prop('checked', user.dietaryRestrictions.vegan); 
+      					$("#kosher").prop('checked', user.dietaryRestrictions.kosher); 
+      					$("#halal").prop('checked', user.dietaryRestrictions.halal);
+      					$("#nutAllergies").prop('checked', user.dietaryRestrictions.nutAllergies); 
+
+					}
+				})
+				
+			});
+
+		</script>
+	
 		<br> 
 
 		<h3> Dietary Restrictions </h3>
-	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian'></input></label> <br> 
-	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan'></input></label> <br>
-	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher'></input></label> <br>
-		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal'></input></label><br>
-		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies'></input></label> <br> <br> <br> 
+	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian' id = "vegetarian"></input></label> <br> 
+	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan' id = "vegan"></input></label> <br>
+	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher' id = "kosher"></input></label> <br>
+		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal' id = "halal"></input></label><br>
+		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies' id = "nutAllergies"></input></label> <br> <br> <br> 
 
-		<button id = "submit" type='submit'>Save to Profile</button>
+		<button id = "submit" type='submit' onclick = "save()"">Save to Profile</button>
 		
 		<script>
-
-			$(function() {
-
-				$("#state li").click(function() {
-					$("#State:first-child").text($(this).text());
-      				$("#State:first-child").val($(this).text());
-				});
-
-				$("#Ethnicity li").click(function() {
-					$("#ethnicity:first-child").text($(this).text());
-      				$("#ethnicity:first-child").val($(this).text());
-				});
-			});
 
 			function ValidateAge() {
 				if (document.getElementById("age").value < 0 | document.getElementById("age").value > 120) {
 					alert ("Not a valid age. Please try again."); 
 				}
+			}
+
+			function save() {
+				$.ajax({
+					type: 'POST', 
+					url: '/settings', 
+					data: {
+						id: "buttoninput", 
+						state: $("#State option:selected").text(),  
+						city: $("#city").val(), 
+						age: $("#age").val(),
+						gender: $("input:radio[name=gender]:checked").val(),
+						ethnicity: $("#Ethnic option:selected").text(),
+						vegetarian: document.getElementById("vegetarian").checked,
+						vegan: document.getElementById("vegan").checked,
+						kosher: document.getElementById("kosher").checked,
+						halal: document.getElementById("halal").checked,
+						nutAllergies: document.getElementById("nutAllergies").checked
+					}, 
+					dataType: 'json', 
+					success: function(data) {
+						var user = data.data; 
+						$("#State").val(user.location.state); 
+      					$("#age").val(user.age); 
+      					$("#city").val(user.location.city); 
+      					if (user.gender == "female") {
+      						document.getElementById("male").checked = false; 
+      						document.getElementById("female").checked = true; 
+      					}
+      					if (user.gender == "male") {
+      						document.getElementById("male").checked = true; 
+      						document.getElementById("female").checked = false; 
+      					}
+      					$("#Ethnic").val(user.ethnicity); 
+      					if (user.dietaryRestrictions.halal == "false") {
+      						document.getElementById("halal").checked = false; 
+      					} else if (user.dietaryRestrictions.halal == "true") {
+      						document.getElementById("halal").checked = true; 
+      					}
+      					
+
+      					if (user.dietaryRestrictions.vegan == "false") {
+      						document.getElementById("vegan").checked = false; 
+      					} else if (user.dietaryRestrictions.vegan == "true"){
+      						document.getElementById("vegan").checked = true; 
+      					}
+
+      					if (user.dietaryRestrictions.vegetarian == "false") {
+      						document.getElementById("vegetarian").checked = false; 
+      					} else if (user.dietaryRestrictions.vegetarian == "true") {
+      						document.getElementById("vegetarian").checked = true; 
+      					}
+
+      					if (user.dietaryRestrictions.nutAllergies == "false") {
+      						document.getElementById("nutAllergies").checked = false; 
+      					} else if (user.dietaryRestrictions.nutAllergies == "true"){
+      						document.getElementById("nutAllergies").checked = true; 
+      					}
+
+      					if (user.dietaryRestrictions.kosher == "false") {
+      						document.getElementById("kosher").checked = false; 
+      					} else if (user.dietaryRestrictions.kosher == "true") {
+      						document.getElementById("kosher").checked = true; 
+      					}
+
+					}
+
+				})
 			}
 
 

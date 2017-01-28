@@ -8,7 +8,10 @@ var userSchema = new Schema({
 	age: Number,
 	gender: String,
 	ethnicity: String,
-	location: String,
+	location: {
+		state: String, 
+		city: String
+	}, 
 	dietaryRestrictions: {
 		vegetarian: Boolean, 
 		vegan: Boolean, 

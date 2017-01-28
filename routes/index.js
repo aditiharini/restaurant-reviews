@@ -6,9 +6,6 @@ var User = require('../schemas/user.js');
 var Review = require('../schemas/review.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
 router.get('/login', function(req, res, next){
     
@@ -18,27 +15,64 @@ router.get('/login', function(req, res, next){
 
 router.post('/login', passport.authenticate('local-login', {failureRedirect:'/login', successRedirect:'/search'}));
 
-router.get('/search', function(req, res, next){
-    res.render('RestaurantSearch.hbs');
-});
-
-router.post ('/search', function(req, res, next) {
-	Review.find({restaurant: {
-                '$regex': request.body.name,
-                 $options: "i"
-    }}, function(err, reviews) {
-    	if (err) {
-    		throw err; 
-    	}
-    	res.send({
-    		data: reviews
-    	}); 
-    }); 
+router.get('/', function(req, res, next) {
+	res.render('homepage'); 
 }); 
+
+
 router.get('/settings', function(req, res, next){
-    res.render('settings');
+	res.render('settings'); 
     
 });
+
+router.post('/settings', function(request, response, next) {
+
+	if (request.body.id == "ethnicity") {
+		User.findOne({_id:request.user._id}, function(err, user){
+		if(err){
+			throw err;
+		}
+		else {
+			response.send({data: user});
+		}
+
+		});
+	}
+	else if (request.body.id == "buttoninput"){
+		User.findOne({_id: request.user._id}, function(err, person) {
+		if (err) {
+			throw err; 
+		}
+		if (person) {
+			person.gender = request.body.gender; 
+			person.age = request.body.age; 
+			person.ethnicity = request.body.ethnicity; 
+			person.location.state = request.body.state; 
+			person.location.city = request.body.city; 
+			person.dietaryRestrictions.vegetarian = request.body.vegetarian;
+			person.dietaryRestrictions.vegan = request.body.vegan; 
+			person.dietaryRestrictions.kosher = request.body.kosher; 
+			person.dietaryRestrictions.halal = request.body.halal; 
+			person.dietaryRestrictions.nutAllergies = request.body.nutAllergies; 
+ 			person.save(function(err) {
+				if (err) {
+					console.log(err); 
+				}
+				else{
+					console.log(person); 
+					response.send({data: person});
+
+				}
+ 
+			});
+
+
+		}
+		
+	}); 
+	}
+}); 
+
 router.get('/signup', function(req, res, next){
 	res.render('signup');
 });
