@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        /*position: absolute;*/
+        overflow:hidden;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .controls {
+        background-color: #fff;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        box-sizing: border-box;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        height: 29px;
+        margin-left: 17px;
+        margin-top: 10px;
+        outline: none;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      .controls:focus {
+        border-color: #4d90fe;
+      }
+      #map #infowindow-content {
+        display: inline;
+      }
+      #reviewForm{
+        background-color : transparent;
+      }
+      #viewReviews{
+        overflow:auto;
+        height:100%;
+      }
+    </style>
+    <style>
+      .colorgraph {
+        height: 5px;
+        border-top: 0;
+        background: #c4e17f;
+        border-radius: 5px;
+        background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+      }
+
+      .btn-social{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.btn-social>:first-child{position:absolute;left:0;top:0;bottom:0;width:32px;line-height:34px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
+      .btn-social.btn-lg{padding-left:61px}.btn-social.btn-lg>:first-child{line-height:45px;width:45px;font-size:1.8em}
+      .btn-social.btn-sm{padding-left:38px}.btn-social.btn-sm>:first-child{line-height:28px;width:28px;font-size:1.4em}
+      .btn-social.btn-xs{padding-left:30px}.btn-social.btn-xs>:first-child{line-height:20px;width:20px;font-size:1.2em}
+      .btn-social-icon{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:34px;width:34px;padding:0}.btn-social-icon>:first-child{position:absolute;left:0;top:0;bottom:0;width:32px;line-height:34px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
+      .btn-social-icon.btn-lg{padding-left:61px}.btn-social-icon.btn-lg>:first-child{line-height:45px;width:45px;font-size:1.8em}
+      .btn-social-icon.btn-sm{padding-left:38px}.btn-social-icon.btn-sm>:first-child{line-height:28px;width:28px;font-size:1.4em}
+      .btn-social-icon.btn-xs{padding-left:30px}.btn-social-icon.btn-xs>:first-child{line-height:20px;width:20px;font-size:1.2em}
+      .btn-social-icon>:first-child{border:none;text-align:center;width:100% !important}
+      .btn-social-icon.btn-lg{height:45px;width:45px;padding-left:0;padding-right:0}
+      .btn-social-icon.btn-sm{height:30px;width:30px;padding-left:0;padding-right:0}
+      .btn-social-icon.btn-xs{height:22px;width:22px;padding-left:0;padding-right:0}
+
+      .btn-google{color:#fff;background-color:#dd4b39;border-color:rgba(0,0,0,0.2)}.btn-google:focus,.btn-google.focus{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}
+      .btn-google:hover{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}
+      .btn-google:active,.btn-google.active,.open>.dropdown-toggle.btn-google{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}.btn-google:active:hover,.btn-google.active:hover,.open>.dropdown-toggle.btn-google:hover,.btn-google:active:focus,.btn-google.active:focus,.open>.dropdown-toggle.btn-google:focus,.btn-google:active.focus,.btn-google.active.focus,.open>.dropdown-toggle.btn-google.focus{color:#fff;background-color:#a32b1c;border-color:rgba(0,0,0,0.2)}
+      .btn-google:active,.btn-google.active,.open>.dropdown-toggle.btn-google{background-image:none}
+      .btn-google.disabled:hover,.btn-google[disabled]:hover,fieldset[disabled] .btn-google:hover,.btn-google.disabled:focus,.btn-google[disabled]:focus,fieldset[disabled] .btn-google:focus,.btn-google.disabled.focus,.btn-google[disabled].focus,fieldset[disabled] .btn-google.focus{background-color:#dd4b39;border-color:rgba(0,0,0,0.2)}
+      .btn-google .badge{color:#dd4b39;background-color:#fff}
+      </style>
+
+  </head>
+  <body>
+      <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+      var map;
+      var infowindow;
+      var service;
+      var markers = [];
+      var currentRestaurantId;
+
+
+      function initMap() {
+        var nashua = {lat: 42.7654, lng: -71.4676};
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: nashua,
+          zoom: 15
+        });
+
+        
+
+        infowindow = new google.maps.InfoWindow();
+        service = new google.maps.places.PlacesService(map);
+      }
+
+
+      function search(){
+        console.log('got here');
+          service.textSearch({
+          // location: map.getCenter(),
+          // radius: 500,
+          type: ['restaurant'],
+          query:$('#pac-input').val(),
+        }, callback);
+      }
+
+      function query(result){
+        deleteMarkers();
+        $('#viewReviews').hide();
+        $.ajax({
+          type:'POST',
+          url:'/map',
+          data:{query:true, id:result.place_id},
+          dataType:'json',
+          success: function(res){
+            console.log("got to ajax request");
+            if(res.error){
+              console.log(error);
+              // createMarker(results[i], id);
+              // return;
+
+            }
+            else if(res.restaurant){
+              console.log(result);
+              createMarker(result, true);
+            }
+            else{
+              console.log(result);
+              createMarker(result, false);
+            }
+
+
+          }
+          // query the database to see if this place has reviews... set infowindow accordingly
+
+        });
+
+      }
+
+    
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          addButtonListeners();
+          for (var i = 0; i < results.length; i++) {
+            // console.log(results[i]);
+            var id = results[i].place_id;
+            // move create marker to ajax callback
+            query(results[i]);
+            
+
+       
+          }
+        }
+      }
+
+      function createMarker(place, restaurantExists) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+        markers.push(marker);
+
+        google.maps.event.addListener(marker, 'click', function() {
+          // if the place exists, have reviews button in infowindow
+          // if it doesn't exist, have make review button
+          // check if user is logged in before anything else
+          var existsHtml = '<div id="content">' +
+      '<p>' + place.name + '</p>'+ 
+      '<p>' + place.formatted_address + '</p>'+
+      '<button class = "btn btn-success viewReviews" id = ' + place.place_id + '>' + 'View Reviews' + '</button>'+
+      '<button class = "btn btn-primary createReview" id = ' + place.place_id + '>' + 'Write a Review</button>'+
+      '</div>';
+
+          var notExistsHtml = '<div id="content">' +
+      '<p>' + place.name + '</p>'+ 
+      '<p>' + place.formatted_address + '</p>' +
+      '<p> No existing reviews </p>' + 
+      '<button class = "btn btn-primary createReview" id = ' + place.place_id + '>' + 'Write a Review</button>'+
+      '</div>';
+          if(restaurantExists){
+            infowindow.setContent(existsHtml);
+          }
+          else{
+            infowindow.setContent(notExistsHtml);
+          }
+          
+          infowindow.open(map, this);
+        });
+      }
+
+    function addButtonListeners(){
+      $('#map').on('click','.createReview', function(e){
+          console.log($(this).attr('id'));
+          var id = $(this).attr('id');
+          console.log(id);
+          currentRestaurantId = id;
+          $('#submitReview').attr('id',id);
+          $('#reviewForm').show();
+          
+
+
+          
+          // $.ajax({
+          //   type:"GET",
+          //   url:'/writeReview',
+          //   data:{id:id},
+          //   success:function(){
+          //     console.log('got to ajax get');
+
+          //   }
+          // });
+
+      });
+      $('#map').on('click', '.viewReviews', function(e){
+        console.log($(this).attr('id'));
+        var id = $(this).attr('id');
+        currentRestaurantId = id;
+        $.ajax({
+          type:'POST',
+          data:{viewReview:true, id:id},
+          dataType:'json',
+          success:function(res){
+            console.log('got to ajax view reviews');
+            $('#viewReviews').empty();
+            $('#viewReviews').show();
+            var template = $('#reviewTemplate').html();
+            var compiledTemplate = Handlebars.compile(template);
+            var reviews = res.reviews;
+            reviews.forEach(function(review){
+              var output = compiledTemplate(review);
+              $('#viewReviews').append(output);
+
+            });
+
+
+
+
+          }
+
+        });
+
+      });
+      // need to check if user is logged in
+      $('#submitReview').on('click', function(e){
+        var id = $(this).attr('id');
+        console.log(id);
+        var content = $('#content').val();
+        var rating = $('#rating').val();
+        $.ajax({
+          type:'POST',
+          url:'/map',
+          data:{isReview:true, id: currentRestaurantId, content:content, rating:rating},
+          dataType:'json',
+          success:function(res){
+            console.log('got to ajax request');
+            console.log(res.message);
+            if(!res.loggedIn){
+              $('#loginModal').modal('show');
+              return;
+            }
+            if(res.message==='success'){
+              $('#reviewForm').hide();
+              // alert("success");
+              // location.reload();
+            }
+            else{
+              alert("please try again");
+            }
+
+          }
+
+        });
+
+      });
+    }
+
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+
+    </script>      
+    <input id="pac-input" class="controls" type="text" placeholder="Enter a location"></input>
+    <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button>
+    <div hidden id='reviewForm' class='form-group''>
+      <input id='content' class='form-control' placeholder="review"></input>
+      <input id = 'rating' class = 'form-control' placeholder='rating'></input>
+      <button id = 'submitReview' type='submit' class='btn btn-success'>Submit</button>
+    </div>
+    <div hidden id='viewReviews' class = 'col-md-4'>
+
+    </div>
+    <div id="map">
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLuZYJktjaZ8fwnkNNsm9dRtRqyIwHo4&libraries=places&callback=initMap" async defer></script>
+    <div id='loginModal' class = 'modal fade' role='dialog'>
+      <div class='modal-dialog' role='document'>
+        <div class = 'modal-content'>
+          <div class='modal-header'>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class='modal-title' id="signInTitle">Please Sign In</h2>
+          </div>
+          <div class='modal-body'>
+            <form method='POST' action='/login' id='loginForm'>
+              <fieldset>
+                <hr class="colorgraph">
+                <div class="form-group">
+                            <input type="username" name="username" id="useranme" class="form-control input-lg" placeholder="Username"></input>
+                </div>
+                <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password"></input>
+                </div>
+                <div style="text-align:center" class='form-group'>
+                  <h5>or</h5>
+                </div>
+                <a href = '/auth/google' class="btn btn-block btn-social btn-google">
+                  <span class="fa fa-google"></span>
+                  Sign in with Google
+                </a>
+                <hr class="colorgraph">
+                <div class="row">
+                  <div class="col-xs-6 col-sm-6 col-md-6">
+                                <button type="submit" class="btn btn-lg btn-success btn-block">Log in</button>
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-md-6">
+                    <a href="/signup" class="btn btn-lg btn-primary btn-block">Register</a>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- infowindow content -->
+
+
+
+    <!-- infowindow content -->
+    <script id="reviewTemplate" type="text/x-handlebars-template">
+           <div class="review" id={{_id}}>
+        <div class='row panel panel-default'>
+          <div class='panel-heading'>
+            <h3 class='panel-title'>\{{user.name}}</h3>
+          </div>
+          <div class='panel-body'>
+            <p class='info'><b>Rating: </b>\{{rating}}</p>
+            <p class='info'><b> Review: </b>\{{content}}</p>
+            <!-- <button class="btn btn-primary update" id={{_id}}>Update</button>
+            <button class = "btn btn-danger delete" id={{_id}}>Delete</button> -->
+          </div>
+        </div>
+      </div>
+    </script>
+  </body>
+</html>

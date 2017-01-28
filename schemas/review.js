@@ -1,7 +1,7 @@
 var mongoose  = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require('./user.js');
-
+// remove restaurant name and location
 var reviewSchema = new Schema({
 	author: User.schema,
 	numLikes: {type:Number, default:0},

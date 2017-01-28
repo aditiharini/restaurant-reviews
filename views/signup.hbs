@@ -1,26 +1,66 @@
 <html>
     
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel='stylesheet' href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 
 <body>  
-    <div id=inputs>
-            <label name='name' >Name</label>
-            <input id='name'></input>
-        	<label name ='username'>Username</label>
-        	<input id='username'></input>
-        	<label name = 'password'>Password</label>
-        	<input id = 'password' type= 'password'></input>        	
-        	<button type='submit' id='submitSignup'> Sign Up </button>
-    	<div id=messages>
-    	</div>
-    </div>
-    	
+<style>
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+</style>
 
+
+    <div class="container">
+        {{#if message}}
+        <div class='alert alert-danger'>
+            <strong>Error!</strong> {{message}}
+        </div>
+        {{/if}}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+        <form method='POST' action='/signup' id='signupForm'>
+            <h2>Please Sign Up</h2>
+            <hr class="colorgraph">
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Name" tabindex="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="username" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="4">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
+                    </div>
+                </div>
+            
+            <hr class="colorgraph">
+            <div class="form-group">
+                <div><button type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7">Register</div>
+            </div>
+        </form>
+    </div>
+</div>
+    	
+<!-- 
     <script>
     	$(document).ready(function(){
     		$('#submitSignup').click(function(){
@@ -56,6 +96,6 @@
     		});
 
     	});
-    </script>
+    </script> -->
     </body>
 </html>
