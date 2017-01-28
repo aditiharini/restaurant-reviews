@@ -4,6 +4,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = require('../schemas/user.js');
 var Review = require('../schemas/review.js');
+var Restaurant = require('../schemas/restaurant.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -84,10 +85,7 @@ router.post('/signup', function(req, res, next){
 
 router.get('/auth/google', passport.authenticate('google', {scope:['profile email']}));
 
-router.get('/auth/google/callback', 
-	passport.authenticate('google', {
-		failureRedirect:'/login'
-	}), function(req,res){
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect:'/login'}), function(req,res){
 		res.redirect('/settings');
 
 });
@@ -176,6 +174,114 @@ router.post('/search', function(req, res, next){
     	
  
     }); 
+});
+router.get('/map', function(req, res, next){
+	// console.log('got to get');
+	res.render('map');
+});
+
+router.post('/map', function(req, res, next){
+	console.log(req.body.query);
+	if(req.body.query){
+		console.log('got to get');
+		Restaurant.findOne({id:req.body.id}, function(err, restaurant){
+			console.log('got to inside query');
+			if(err){
+				console.log(err);
+				return res.send({restaurantExists: false, error:'there was an error'});
+			}
+			else if(restaurant){
+				console.log(restaurant);
+				return res.send({restaurantExists: true, restaurant:restaurant});
+			}
+			//if there's no matching restaurant don't send anything
+			else{
+				console.log('no restaurant');
+				return res.send({restaurantExists:false,});
+			}
+		});
+	}
+	if(req.body.isReview){
+		console.log('got to post review');
+		console.log('check login');
+		console.log(req.user);
+		if(!req.user){
+			console.log('no user');
+			return res.send({loggedIn:false});
+		}
+		var reviewObj = {
+			content:req.body.content,
+			rating:req.body.rating
+
+		};
+		Review.create(reviewObj, function(err, review){
+			if(err){
+				console.log(err);
+				return res.send({loggedIn:true, message:'error'});
+			}
+			if(review){
+				Restaurant.findOne({id:req.body.id}, function(err, restaurant){
+					if(err){
+						console.log(err);
+						res.send({loggedIn:true, message:'error'});
+					}
+					else if(restaurant){
+						restaurant.reviews.push(review);
+						restaurant.save(function(err){
+							if(err){
+								res.send({loggedIn:true, message:'error'});
+							}
+							else{
+								res.send({loggedIn:true, message:'success'});
+							}
+
+						});
+
+
+					}
+					else{
+						Restaurant.create({id:req.body.id}, function(err, newRestaurant){
+							if(err){
+								console.log(err);
+								return res.send({loggedIn:true, message:'error'});
+							}
+							else if(newRestaurant){
+								newRestaurant.reviews.push(review);
+								newRestaurant.save(function(err){
+									if(err){
+										console.log(err);
+										res.send({loggedIn:true,message:"error"});
+									}
+									else{
+										res.send({loggedIn:true, message:'success'});
+
+									}
+								});
+							}
+
+						});
+					}
+
+				});
+			}
+
+		});
+
+	}
+	if(req.body.viewReview){
+		Restaurant.findOne({id:req.body.id}, function(err, restaurant){
+			if(err){
+				console.log(err);
+				return;
+			}
+			else{
+				console.log(restaurant);
+				return res.send({reviews:restaurant.reviews});
+			}
+
+		});
+	}
+
 });
 
 router.get('/logout', function(req, res){
