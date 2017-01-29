@@ -34,10 +34,6 @@ router.get('/login', function(req, res, next){
     
 });
 
-router.get('/settings', isLoggedIn, function(req, res, next){
-    res.render('settings');
-    
-});
 
 router.post('/settings', function(request, response, next) {
 
@@ -232,6 +228,7 @@ router.post('/map', function(req, res, next){
 			console.log('no user');
 			return res.send({loggedIn:false});
 		}
+		console.log(req.body.content);
 		var reviewObj = {
 			content:req.body.content,
 			rating:req.body.rating,
@@ -303,71 +300,95 @@ router.post('/map', function(req, res, next){
 			else{
 				console.log(restaurant);
 				if(req.user){
-					var user = req.user;
+					var currentUser;
+					var reviewAuthor;
 					console.log('inside conditional');
-					console.log(user);
 					var reviews = restaurant.reviews;
 					var validReviews = [];
 					var review_match = [];
-					reviews.forEach(function(review, index){
-						if(req.user===undefined){
-							console.log('user is undefined');
+					User.findOne({_id:req.user._id}, function(err, sessionUser){
+						if(err){
+							throw err;
 						}
-						console.log('for each');
-						console.log(req.user);
-						var numMatches = 0;
-						var isValid = false;
-						console.log(req.user.name+ "is my name");
-						console.log(req.user.dietaryRestrictions);
-						// if(req.user.dietaryRestrictions.vegetarian==review.author.dietaryRestrictions.vegetarian || req.user.dietaryRestrictions.vegan==review.author.dietaryRestrictions.vegan || req.user.dietaryRestrictions.kosher==review.author.dietaryRestrictions.kosher||req.user.dietaryRestrictions.halal==review.author.dietaryRestrictions.halal){
-						// 	validReviews.push(review);
-						// }
-						if(req.user.dietaryRestrictions.vegetarian===review.author.dietaryRestrictions.vegetarian){
-							numMatches+=1;
-							isValid = true;
-						}
-						if(req.user.dietaryRestrictions.vegan===review.author.dietaryRestrictions.vegan){
-							numMatches +=1;
-							isValid = true;
-						}
-						if(req.user.dietaryRestrictions.kosher===review.author.dietaryRestrictions.kosher){
-							numMatches +=1;
-							isValid = true;
-
-						}
-						if(req.user.dietaryRestrictions.halal===review.author.dietaryRestrictions.kosher){
-							numMatches +=1;
-							isValid = true;
-						}
-						if(isValid){
-							validReviews.push(review);
-							var pair = [review, numMatches];
-							review_match.push(pair);
-
-						}
-
-						if(index==reviews.length-1){
-							review_match.sort(function(a,b){
-								if(a[1]>b[1]){
-									return -1;
+						if(sessionUser){
+							currentUser = sessionUser;
+						reviews.forEach(function(review, index){
+							User.findOne({_id:review.author._id}, function(err, reviewUser){
+								if(err){
+									throw err;
 								}
-								if(a[1]<b[1]){
-									return 1;
-								}
-								return 0;
+								if(reviewUser){
+									reviewAuthor = reviewUser;
+									console.log(reviewAuthor);
+							var numMatches = 0;
+							var isValid = false;
 
+
+
+							if(currentUser.dietaryRestrictions.vegetarian===reviewAuthor.dietaryRestrictions.vegetarian){
+								console.log('got to veg');
+								numMatches+=1;
+								isValid = true;
+							}
+							if(currentUser.dietaryRestrictions.vegan===reviewAuthor.dietaryRestrictions.vegan){
+								console.log('got to vegan');
+								numMatches +=1;
+								isValid = true;
+							}
+							if(currentUser.dietaryRestrictions.kosher===reviewAuthor.dietaryRestrictions.kosher){
+								console.log('got to kosher');
+								numMatches +=1;
+								isValid = true;
+
+							}
+							if(currentUser.dietaryRestrictions.halal===reviewAuthor.dietaryRestrictions.kosher){
+								console.log('got to halal');
+								numMatches +=1;
+								isValid = true;
+							}
+							if(isValid){
+								validReviews.push(review);
+								var pair = [review, numMatches];
+								review_match.push(pair);
+
+							}
+
+							if(index==reviews.length-1){
+								if(validReviews.length===0){
+									return res.send({reviews:validReviews});
+								}
+								review_match.sort(function(a,b){
+									if(a[1]>b[1]){
+										return -1;
+									}
+									if(a[1]<b[1]){
+										return 1;
+									}
+									return 0;
+
+								});
+								var sortedReviews = [];
+								review_match.forEach(function(pair, index){
+									sortedReviews.push(pair[0]);
+									if (index==review_match.length-1){
+										res.send({reviews:sortedReviews});
+									}
+								});
+								
+							}
+									return;
+								}
 							});
-							var sortedReviews = [];
-							review_match.forEach(function(pair, index){
-								sortedReviews.push(pair[0]);
-								if (index==review_match.length-1){
-									res.send({reviews:sortedReviews});
-								}
-							});
-							
-						}
+			
 
-					});
+
+						});
+								
+							}
+
+						});
+
+
 
 				}
 				else{
