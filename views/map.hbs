@@ -47,13 +47,45 @@
       #map #infowindow-content {
         display: inline;
       }
-      #reviewForm{
-        background-color : transparent;
+
+      #content {
+        height: 100px;
       }
       #viewReviews{
         overflow:auto;
         height:100%;
       }
+
+      ul {
+        list-style-type: none; 
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        float: right;
+        display: inline;
+      }
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+      }
+      li a:hover {
+        background-color: #111;
+      }
+      #search {
+        float: left;
+      }
+
+      #header {
+        height: 45px;
+        margin: 0; 
+        padding:  0;
+      }
+      
+
     </style>
     <style>
       .colorgraph {
@@ -221,21 +253,7 @@
           console.log(id);
           currentRestaurantId = id;
           $('#submitReview').attr('id',id);
-          $('#reviewForm').show();
-          
-
-
-          
-          // $.ajax({
-          //   type:"GET",
-          //   url:'/writeReview',
-          //   data:{id:id},
-          //   success:function(){
-          //     console.log('got to ajax get');
-
-          //   }
-          // });
-
+          $('#writeAReview').modal('show');
       });
       $('#map').on('click', '.viewReviews', function(e){
         console.log($(this).attr('id'));
@@ -257,10 +275,6 @@
               $('#viewReviews').append(output);
 
             });
-
-
-
-
           }
 
         });
@@ -281,11 +295,12 @@
             console.log('got to ajax request');
             console.log(res.message);
             if(!res.loggedIn){
+              $('#writeAReview').modal('hide'); 
               $('#loginModal').modal('show');
               return;
             }
             if(res.message==='success'){
-              $('#reviewForm').hide();
+              $('#writeAReview').modal('hide');
               // alert("success");
               // location.reload();
             }
@@ -316,18 +331,31 @@
       }
 
     </script>      
-    <input id="pac-input" class="controls" type="text" placeholder="Enter a location"></input>
-    <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button>
-    <div hidden id='reviewForm' class='form-group''>
-      <input id='content' class='form-control' placeholder="review"></input>
-      <input id = 'rating' class = 'form-control' placeholder='rating'></input>
-      <button id = 'submitReview' type='submit' class='btn btn-success'>Submit</button>
+    <div id="header">
+    <div id="search">
+    <input id="pac-input" class="controls" type="text" placeholder="Enter a location"></input> 
+    <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button> 
     </div>
+    <div id="navigation">
+      <ul> 
+      {{#if loggedIn}}
+        <li> <a href="/logout"> Log Out </a> </li>
+        <li> <a href="#" data-toggle="modal" data-target = "#profile"> Profile </a></li>
+      {{else}}
+        <li> <a href="#" data-toggle="modal" data-target="#loginModal"> Log in/Register </a></li>
+      {{/if}}
+        
+      </ul>
+    </div>
+    </div>
+
     <div hidden id='viewReviews' class = 'col-md-4'>
 
     </div>
     <div id="map">
     </div>
+
+    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLuZYJktjaZ8fwnkNNsm9dRtRqyIwHo4&libraries=places&callback=initMap" async defer></script>
     <div id='loginModal' class = 'modal fade' role='dialog'>
       <div class='modal-dialog' role='document'>
@@ -365,10 +393,254 @@
               </fieldset>
             </form>
           </div>
-        </div>
       </div>
 
     </div>
+    </div>
+
+
+    <div id='writeAReview' class = 'modal fade' role='dialog'> 
+     <div class='modal-dialog' role='document'>
+        <div class = 'modal-content'>
+          <div class='modal-header'>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class='modal-title' id="reviewTitle">Write a Review</h2>
+          </div>
+
+           <div class='modal-body'>
+              <fieldset>
+                <div class="form-group">
+                            <input type="text" id="content" class="form-control input-lg" placeholder="Review"></input>
+                </div>
+                <div class="form-group">
+                            <input type="text" id="rating" class="form-control input-lg" placeholder="Rating"></input>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                      <button type="submit" class="btn btn-lg btn-success btn-block" id="submitReview">Submit Review</button>
+                </div>
+              </fieldset>
+          </div>
+      </div>
+    </div>
+    </div>
+
+    <div id="profile" class = "modal fade" role = "dialog">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times; </span></button>
+            <h2 class = "modal-title" id = "profileTitle"> Settings </h2>
+            </div>
+          <div class = "modal-body">
+          <fieldset> 
+          <label>Location </label><br>
+                <label> State </label>
+                <select class="custom-select" id = "State">
+                <option id = "selected" select></option>
+                  <option value="AL">AL</option>
+                  <option value="AK">AK</option>
+                  <option value="AZ">AZ</option>
+                  <option value="AR">AR</option>
+                  <option value="CA">CA</option>
+                  <option value="CO">CO</option>
+                  <option value="CT">CT</option>
+                  <option value="DE">DE</option>
+                  <option value="FL">FL</option>
+                  <option value="GA">GA</option>
+                  <option value="HI">HI</option>
+                  <option value="ID">ID</option>
+                  <option value="IL">IL</option>
+                  <option value="IN">IN</option>
+                  <option value="IA">IA</option>
+                  <option value="KS">KS</option>
+                  <option value="KY">KY</option>
+                  <option value="LA">LA</option>
+                  <option value="ME">ME</option>
+                  <option value="MD">MD</option>
+                  <option value="MA">MA</option>
+                  <option value="MI">MI</option>
+                  <option value="MN">MN</option>
+                  <option value="MS">MS</option>
+                  <option value="MO">MO</option>
+                  <option value="MT">MT</option>
+                  <option value="NE">NE</option>
+                  <option value="NV">NV</option>
+                  <option value="NH">NH</option>
+                  <option value="NJ">NJ</option>
+                  <option value="NM">NM</option>
+                  <option value="NY">NY</option>
+                  <option value="NC">NC</option>
+                  <option value="ND">ND</option>
+                  <option value="OH">OH</option>
+                  <option value="OK">OK</option>
+                  <option value="OR">OR</option>
+                  <option value="PA">PA</option>
+                  <option value="RI">RI</option>
+                  <option value="SC">SC</option>
+                  <option value="SD">SD</option>
+                  <option value="TN">TN</option>
+                  <option value="TX">TX</option>
+                  <option value="UT">UT</option>
+                  <option value="VT">VT</option>
+                  <option value="VA">VA</option>
+                  <option value="WA">WA</option>
+                  <option value="WV">WV</option>
+                  <option value="WI">WI</option>
+                  <option value="WY">WY</option>
+              </select>
+
+              <br> 
+
+              <label> City <input id = "city" type = "text"> </input></label> <br><br>
+                <label> Age <input id='age' type = 'text' oninput = 'ValidateAge()'></input></label> <br><br>
+
+              <label> Gender </label> <input type="radio" name="gender" value="male" id = "male"> Male <input type="radio" name="gender" value="female" id= "female"> Female<br> <br>
+
+              <select class="custom-select" id = "Ethnic">
+                <option id = "selected" select></option>
+                  <option value="White">White</option>
+                  <option value="Hispanic or Latino">Hispanic or Latino</option>
+                  <option value="Black or African-American">Black or African-American</option>
+                  <option value="South Asian">South Asian</option>
+                  <option value="East Asian">East Asian</option>
+                  <option value="Italian">Italian</option>
+                  <option value="Native American or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+                  <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+              </select>
+
+              
+              <br> 
+
+              <h3> Dietary Restrictions </h3>
+                <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian' id = "vegetarian"></input></label> <br> 
+                <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan' id = "vegan"></input></label> <br>
+                <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher' id = "kosher"></input></label> <br>
+              <label> Halal<input type = 'checkbox' id = 'halal' value = 'halal' id = "halal"></input></label><br>
+              <label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies' id = "nutAllergies"></input></label> <br> <br> <br> 
+
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                      <button type="submit" class="btn btn-lg btn-success btn-block" id="submit" onclick = "save()">Save to Profile</button>
+                </div>
+
+            </fieldset>
+          </div>
+          </div>
+          </div>
+          </div>
+
+
+<script>
+      $(document).ready(function(){
+        $.ajax({
+          type: 'POST', 
+          url: '/settings', 
+          data: {id: "ethnicity"}, 
+          dataType: 'json', 
+          success: function(data) {
+            var user = data.data; 
+            var ethnicity = user.ethnicity; 
+            var city = user.location.city; 
+            var state = user.location.state; 
+            var age = user.age; 
+            $("#Ethnic").val(ethnicity); 
+            $("#State").val(state); 
+            $("#city").val(city); 
+            $("#age").val(age); 
+            if (user.gender == "female") {
+                  document.getElementById("male").checked = false; 
+                  document.getElementById("female").checked = true; 
+                }
+                if (user.gender == "male") {
+                  document.getElementById("male").checked = true; 
+                  document.getElementById("female").checked = false; 
+                }
+                $("#vegetarian").prop('checked', user.dietaryRestrictions.vegetarian); 
+                $("#vegan").prop('checked', user.dietaryRestrictions.vegan); 
+                $("#kosher").prop('checked', user.dietaryRestrictions.kosher); 
+                $("#halal").prop('checked', user.dietaryRestrictions.halal);
+                $("#nutAllergies").prop('checked', user.dietaryRestrictions.nutAllergies); 
+
+          }
+        })
+        
+      });
+
+  
+      function ValidateAge() {
+        if (document.getElementById("age").value < 0 | document.getElementById("age").value > 120) {
+          alert ("Not a valid age. Please try again."); 
+        }
+      }
+      function save() {
+        $.ajax({
+          type: 'POST', 
+          url: '/settings', 
+          data: {
+            id: "buttoninput", 
+            state: $("#State option:selected").text(),  
+            city: $("#city").val(), 
+            age: $("#age").val(),
+            gender: $("input:radio[name=gender]:checked").val(),
+            ethnicity: $("#Ethnic option:selected").text(),
+            vegetarian: document.getElementById("vegetarian").checked,
+            vegan: document.getElementById("vegan").checked,
+            kosher: document.getElementById("kosher").checked,
+            halal: document.getElementById("halal").checked,
+            nutAllergies: document.getElementById("nutAllergies").checked
+          }, 
+          dataType: 'json', 
+          success: function(data) {
+            var user = data.data; 
+            $("#State").val(user.location.state); 
+                $("#age").val(user.age); 
+                $("#city").val(user.location.city); 
+                if (user.gender == "female") {
+                  document.getElementById("male").checked = false; 
+                  document.getElementById("female").checked = true; 
+                }
+                if (user.gender == "male") {
+                  document.getElementById("male").checked = true; 
+                  document.getElementById("female").checked = false; 
+                }
+                $("#Ethnic").val(user.ethnicity); 
+                if (user.dietaryRestrictions.halal == "false") {
+                  document.getElementById("halal").checked = false; 
+                } else if (user.dietaryRestrictions.halal == "true") {
+                  document.getElementById("halal").checked = true; 
+                }
+                
+
+                if (user.dietaryRestrictions.vegan == "false") {
+                  document.getElementById("vegan").checked = false; 
+                } else if (user.dietaryRestrictions.vegan == "true"){
+                  document.getElementById("vegan").checked = true; 
+                }
+
+                if (user.dietaryRestrictions.vegetarian == "false") {
+                  document.getElementById("vegetarian").checked = false; 
+                } else if (user.dietaryRestrictions.vegetarian == "true") {
+                  document.getElementById("vegetarian").checked = true; 
+                }
+
+                if (user.dietaryRestrictions.nutAllergies == "false") {
+                  document.getElementById("nutAllergies").checked = false; 
+                } else if (user.dietaryRestrictions.nutAllergies == "true"){
+                  document.getElementById("nutAllergies").checked = true; 
+                }
+
+                if (user.dietaryRestrictions.kosher == "false") {
+                  document.getElementById("kosher").checked = false; 
+                } else if (user.dietaryRestrictions.kosher == "true") {
+                  document.getElementById("kosher").checked = true; 
+                }
+
+          }
+
+        })
+      }
+
+
+    </script>
     <!-- infowindow content -->
 
 
@@ -381,7 +653,7 @@
             <h3 class='panel-title'>\{{user.name}}</h3>
           </div>
           <div class='panel-body'>
-            <p class='info'><b>Rating: </b>\{{rating}}</p>
+            <p class='info'><b>Rating: </b>\{{rating}}</p>s
             <p class='info'><b> Review: </b>\{{content}}</p>
             <!-- <button class="btn btn-primary update" id={{_id}}>Update</button>
             <button class = "btn btn-danger delete" id={{_id}}>Delete</button> -->

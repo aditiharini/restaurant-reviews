@@ -13,14 +13,6 @@ router.get('/login', function(req, res, next){
     res.render('login', {message:req.flash('loginMessage')});
     
 });
-
-router.post('/login', passport.authenticate('local-login', {failureRedirect:'/login', successRedirect:'/search'}));
-
-router.get('/', function(req, res, next) {
-	res.render('homepage'); 
-}); 
-
-
 router.get('/settings', isLoggedIn, function(req, res, next){
     res.render('settings');
     
@@ -214,7 +206,12 @@ router.post('/search', function(req, res, next){
 });
 router.get('/map', function(req, res, next){
 	// console.log('got to get');
-	res.render('map');
+	var loggedIn = false;
+	if(req.user){
+		loggedIn = true;
+
+	}
+	res.render('map', {loggedIn:loggedIn});
 });
 
 router.post('/map', function(req, res, next){

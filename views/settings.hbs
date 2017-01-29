@@ -20,13 +20,9 @@
     		padding:0px;
 		}	
     	</style>
-		{{>sidenav}}
-
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<div id = "reloadedPage">
 	</div>
-	    <h1>Settings</h1>
-	    <br>
 
 	    <label>Location </label><br>
 	    <label> State </label>
@@ -103,6 +99,18 @@
 		    <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
 		</select>
 
+		
+		<br> 
+
+		<h3> Dietary Restrictions </h3>
+	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian' id = "vegetarian"></input></label> <br> 
+	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan' id = "vegan"></input></label> <br>
+	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher' id = "kosher"></input></label> <br>
+		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal' id = "halal"></input></label><br>
+		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies' id = "nutAllergies"></input></label> <br> <br> <br> 
+
+		<button id = "submit" type='submit' onclick = "save()"">Save to Profile</button>
+		
 		<script>
 			$(document).ready(function(){
 				$.ajax({
@@ -139,31 +147,12 @@
 				
 			});
 
-		</script>
 	
-		<br> 
-
-		<h3> Dietary Restrictions </h3>
-	    <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian' id = "vegetarian"></input></label> <br> 
-	    <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan' id = "vegan"></input></label> <br>
-	    <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher' id = "kosher"></input></label> <br>
-		<label> Halal<input type = 'checkbox' id = 'halal' value = 'halal' id = "halal"></input></label><br>
-		<label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies' id = "nutAllergies"></input></label> <br> <br> <br> 
-
-		<button id = "submit" type='submit' onclick = "save()"">Save to Profile</button>
-		
-		<script>
-
 			function ValidateAge() {
 				if (document.getElementById("age").value < 0 | document.getElementById("age").value > 120) {
 					alert ("Not a valid age. Please try again."); 
 				}
 			}
-			$(document).ready(function(){
-
-
-			});
-
 			function save() {
 				$.ajax({
 					type: 'POST', 
