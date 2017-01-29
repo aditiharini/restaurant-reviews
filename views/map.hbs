@@ -12,10 +12,14 @@
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+/*       #mapOuter{
+        height:100%;
+        position:absolute;
+       }*/
       #map {
         height: 100%;
         /*position: absolute;*/
-        overflow:hidden;
+        /*overflow:hidden;*/
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -282,9 +286,8 @@
             console.log(res.message);
             if(!res.loggedIn){
               $('#loginModal').modal('show');
-              return;
             }
-            if(res.message==='success'){
+            else if(res.message==='success'){
               $('#reviewForm').hide();
               // alert("success");
               // location.reload();
@@ -315,6 +318,79 @@
         markers = [];
       }
 
+      $(document).ready(function(){
+          $('#loginButton').click(function(){
+            $('#loginAlert').empty();
+            $('#loginAlert').hide();
+            console.log('login click event triggered');
+            var username=$('#loginUsername').val();
+            var password = $('#loginPassword').val();
+            $.ajax({
+              type:'GET',
+              url:'/login',
+              data:{username:username, password:password},
+              dataType:'json',
+              contentType: 'application/json',
+              success:function(res){
+                console.log('got to login ajax');
+                console.log(res.message);
+                if(res.message=='success'){
+                  $('#loginModal').modal('hide');
+                  $('#navigation').append('<li> <a id = "navbarLogout" href="#"> Log Out </a> </li>');
+                  $('#navigation').append('<li> <a href="#" data-toggle="modal" data-target = "#profile" id="navbarProfile"> Profile </a></li>');
+                  $('#navbarProfile').show();
+                  $('#navbarLogout').show();
+                  $('#navbarLogin').hide();
+
+                }
+                // var alertHtml = '<div class="alert alert-danger">' + 
+                // '<strong>Error!</strong>' + res.message +
+                // '</div>';
+                // $('loginModalBody').append(alertHtml);
+                else{
+                  $('#loginAlert').append('<p>' + res.message + '</p>');
+                  $('#loginAlert').show();
+
+                }
+              
+              }
+
+          });
+        });
+          $('#loginToRegister').click(function(){
+            $('#loginModal').modal('hide');
+            $('#signupModal').modal('show');
+
+          });
+
+          $('#signupSubmit').click(function(){
+              $('#signupAlert').empty();
+              $('#signupAlert').hide();
+              var name = $('#signupName').val();
+              var username = $('#signupUsername').val();
+              var password = $('#signupPassword').val();
+              $.ajax({
+                type:'POST',
+                url: '/signup',
+                data: {name:name, username:username, password:password},
+                dataType:'json',
+                success:function(res){
+                  console.log('got to sign in ajax');
+                  console.log(res.message);
+                  if(res.message=='success'){
+                    $('#signupModal').modal('hide');
+                    $('#loginModal').modal('show');
+                  }
+                  else{
+                    $('#signupAlert').append('<p>' + res.message + '</p>');
+                    $('#signupAlert').show();
+                  }
+                }
+
+              });
+          });
+      });
+
     </script>      
     <input id="pac-input" class="controls" type="text" placeholder="Enter a location"></input>
     <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button>
@@ -323,28 +399,43 @@
       <input id = 'rating' class = 'form-control' placeholder='rating'></input>
       <button id = 'submitReview' type='submit' class='btn btn-success'>Submit</button>
     </div>
+    <div id="navigation">
+      <ul> 
+      {{#if loggedIn}}
+        <li id = 'navbarLogout'> <a  href="/logout"> Log Out </a> </li>
+        <li id='navbarProfile'> <a href="#" data-toggle="modal" data-target = "#profile" > Profile </a></li>
+      {{else}}
+        <li id= 'navbarLogin'> <a href="#" data-toggle="modal" data-target="#loginModal" > Log in/Register </a></li>
+      {{/if}}
+      </ul>
+    </div>
     <div hidden id='viewReviews' class = 'col-md-4'>
 
     </div>
+    <!-- <div id='mapOuter'> -->
     <div id="map">
     </div>
+    <!-- </div> -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLuZYJktjaZ8fwnkNNsm9dRtRqyIwHo4&libraries=places&callback=initMap" async defer></script>
     <div id='loginModal' class = 'modal fade' role='dialog'>
       <div class='modal-dialog' role='document'>
         <div class = 'modal-content'>
           <div class='modal-header'>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button id = 'loginClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h2 class='modal-title' id="signInTitle">Please Sign In</h2>
           </div>
-          <div class='modal-body'>
-            <form method='POST' action='/login' id='loginForm'>
+          <div id='loginModalBody' class='modal-body'>
+            <!-- <form method='POST' action='/login' id='loginForm'> -->
+                <div hidden id = 'loginAlert' class='alert alert-danger'>
+                  <!-- <strong>Error!</strong> {{message}} -->
+                </div>
               <fieldset>
                 <hr class="colorgraph">
                 <div class="form-group">
-                            <input type="username" name="username" id="useranme" class="form-control input-lg" placeholder="Username"></input>
+                  <input type="username" name="username" id="loginUsername" class="form-control input-lg" placeholder="Username"></input>
                 </div>
                 <div class="form-group">
-                            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password"></input>
+                  <input type="password" name="password" id="loginPassword" class="form-control input-lg" placeholder="Password"></input>
                 </div>
                 <div style="text-align:center" class='form-group'>
                   <h5>or</h5>
@@ -356,18 +447,56 @@
                 <hr class="colorgraph">
                 <div class="row">
                   <div class="col-xs-6 col-sm-6 col-md-6">
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Log in</button>
+                      <button id='loginButton' type="submit" class="btn btn-lg btn-success btn-block">Log in</button>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-6">
-                    <a href="/signup" class="btn btn-lg btn-primary btn-block">Register</a>
+                    <button id= 'loginToRegister' class="btn btn-lg btn-primary btn-block">Register</button>
                   </div>
                 </div>
               </fieldset>
-            </form>
+            <!-- </form> -->
           </div>
         </div>
       </div>
+    </div>
 
+    <div id='signupModal' class = 'modal fade' role='dialog'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <button id = 'signupClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class='modal-title' id="signupTitle">Please Sign Up</h2>
+          </div>
+          <div id='loginModalBody' class='modal-body'>
+            <!-- <form method='POST' action='/login' id='loginForm'> -->
+            <div hidden id = 'signupAlert' class='alert alert-danger'>
+              <!-- <strong>Error!</strong> {{message}} -->
+            </div>
+            <hr class="colorgraph">
+                <div class="form-group">
+                    <div class="form-group">
+                        <input id = 'signupName' type="text" name="name" id="name" class="form-control input-lg" placeholder="Name" tabindex="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input id='signupUsername' type="username" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="4">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <input id='signupPassword' type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
+                    </div>
+                </div>
+            
+            <hr class="colorgraph">
+            <div class="form-group">
+                <div><button id='signupSubmit' type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7">Register</div>
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+      </div>
     </div>
     <!-- infowindow content -->
 

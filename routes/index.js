@@ -12,27 +12,35 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next){
+	passport.authenticate('local-login', function(err, user, info){
+		if(err){
+			return res.send({message:err});
+		}
+		if(!user){
+			return res.send({message:"no matching user"});
+		}
+		req.logIn(user, function(err){
+			if(err){
+				return res.send({message:'error'});
+			}
+			console.log('login user');
+			console.log(req.user);
+			req.session.user = req.user;
+			res.send({message:'success'});
+
+		});
+		
+
+	})(req, res, next);
     
-    res.render('login', {message:req.flash('loginMessage')});
+    // res.render('login', {message:req.flash('loginMessage')});
     
 });
 
-router.post('/login', passport.authenticate('local-login', {failureRedirect:'/login', successRedirect:'/search'}));
 
 
-router.post ('/search', function(req, res, next) {
-	Review.find({restaurant: {
-                '$regex': req.body.name,
-                 $options: "i"
-    }}, function(err, reviews) {
-    	if (err) {
-    		throw err; 
-    	}
-    	res.send({
-    		data: reviews
-    	}); 
-    }); 
-}); 
+
+
 router.get('/settings', isLoggedIn, function(req, res, next){
     res.render('settings');
     
@@ -55,13 +63,11 @@ router.post('/signup', function(req, res, next){
 		console.log('got here');
 		if(err){
 			console.log(err);
-			req.flash('signupMessage', "There was an error. Please try again.");
-			return res.redirect('/signup');
+			return res.send({message:'error'});
 		}
 		if(user){
 			console.log(user);
-			req.flash('signupMessage', 'This username is taken');
-			return res.redirect('/signup');
+			return res.send({message:'username is taken'});
 		
 		}
 		var newUser = new User();
@@ -71,11 +77,10 @@ router.post('/signup', function(req, res, next){
 		newUser.save(function(err){
 			if(err){
 				console.log(err);
-				req.flash('signupMessage', 'There was an error. Please try again.');
-				return res.redirect('/signup');
+				return res.send({message:"error"});
 			}
 			else{
-				return res.redirect('/login');
+				return res.send({message:'success'});
 			}
 			});
 		
@@ -85,8 +90,9 @@ router.post('/signup', function(req, res, next){
 
 router.get('/auth/google', passport.authenticate('google', {scope:['profile email']}));
 
-router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect:'/login'}), function(req,res){
-		res.redirect('/settings');
+router.get('/auth/google/callback', passport.authenticate('google'), function(req,res){
+	console.log(req.user);
+	res.redirect('/map');
 
 });
 
@@ -143,41 +149,15 @@ router.post('/reviews', function(req, res, next){
 	}
 
 });
-router.get('/search', isLoggedIn, function(req, res, next){
-	res.render('search');
 
-});
-
-router.post('/search', function(req, res, next){
-	// this should filter by author of the review
-	// should add filter options to the search bar
-	console.log('got to post');
-	Review.find({restaurant: {
-        $regex: req.body.name,
-         $options: "i"
-    }, 
-    'author.dietaryRestrictions.vegetarian':req.user.dietaryRestrictions.vegetarian,
-    'author.dietaryRestrictions.vegan':req.user.dietaryRestrictions.vegan,
-	'author.dietaryRestrictions.kosher':req.user.dietaryRestrictions.kosher,
-	'author.dietaryRestrictions.halal':req.user.dietaryRestrictions.halal}, function(err, reviews) {
-    	if (err) {
-    		console.log(err);
-    		throw err; 
-    	}
-    	if(reviews){
-    		console.log(reviews);
-    		res.send({
-    		data: reviews
-    		});
-
-    	}
-    	
- 
-    }); 
-});
 router.get('/map', function(req, res, next){
+	console.log(req.user);
+	var loggedIn = false;
+	if(req.user){
+		loggedIn = true;
+	}
 	// console.log('got to get');
-	res.render('map');
+	res.render('map', {loggedIn:loggedIn});
 });
 
 router.post('/map', function(req, res, next){
@@ -204,14 +184,15 @@ router.post('/map', function(req, res, next){
 	if(req.body.isReview){
 		console.log('got to post review');
 		console.log('check login');
-		console.log(req.user);
+		console.log(req.session.user);
 		if(!req.user){
 			console.log('no user');
 			return res.send({loggedIn:false});
 		}
 		var reviewObj = {
 			content:req.body.content,
-			rating:req.body.rating
+			rating:req.body.rating,
+			author:req.user
 
 		};
 		Review.create(reviewObj, function(err, review){
@@ -269,24 +250,97 @@ router.post('/map', function(req, res, next){
 
 	}
 	if(req.body.viewReview){
+		console.log("request user");
+		console.log(req.user);
+
 		Restaurant.findOne({id:req.body.id}, function(err, restaurant){
 			if(err){
 				console.log(err);
-				return;
 			}
 			else{
 				console.log(restaurant);
-				return res.send({reviews:restaurant.reviews});
-			}
+				if(req.user){
+					var user = req.user;
+					console.log('inside conditional');
+					console.log(user);
+					var reviews = restaurant.reviews;
+					var validReviews = [];
+					var review_match = [];
+					reviews.forEach(function(review, index){
+						if(req.user===undefined){
+							console.log('user is undefined');
+						}
+						console.log('for each');
+						console.log(req.user);
+						var numMatches = 0;
+						var isValid = false;
+						console.log(req.user.name+ "is my name");
+						console.log(req.user.dietaryRestrictions);
+						// if(req.user.dietaryRestrictions.vegetarian==review.author.dietaryRestrictions.vegetarian || req.user.dietaryRestrictions.vegan==review.author.dietaryRestrictions.vegan || req.user.dietaryRestrictions.kosher==review.author.dietaryRestrictions.kosher||req.user.dietaryRestrictions.halal==review.author.dietaryRestrictions.halal){
+						// 	validReviews.push(review);
+						// }
+						if(req.user.dietaryRestrictions.vegetarian===review.author.dietaryRestrictions.vegetarian){
+							numMatches+=1;
+							isValid = true;
+						}
+						if(req.user.dietaryRestrictions.vegan===review.author.dietaryRestrictions.vegan){
+							numMatches +=1;
+							isValid = true;
+						}
+						if(req.user.dietaryRestrictions.kosher===review.author.dietaryRestrictions.kosher){
+							numMatches +=1;
+							isValid = true;
 
+						}
+						if(req.user.dietaryRestrictions.halal===review.author.dietaryRestrictions.kosher){
+							numMatches +=1;
+							isValid = true;
+						}
+						if(isValid){
+							validReviews.push(review);
+							var pair = [review, numMatches];
+							review_match.push(pair);
+
+						}
+
+						if(index==reviews.length-1){
+							review_match.sort(function(a,b){
+								if(a[1]>b[1]){
+									return -1;
+								}
+								if(a[1]<b[1]){
+									return 1;
+								}
+								return 0;
+
+							});
+							var sortedReviews = [];
+							review_match.forEach(function(pair, index){
+								sortedReviews.push(pair[0]);
+								if (index==review_match.length-1){
+									res.send({reviews:sortedReviews});
+								}
+							});
+							
+						}
+
+					});
+
+				}
+				else{
+					res.send({reviews:restaurant.reviews});
+				}
+			}
 		});
+
+		
 	}
 
 });
 
 router.get('/logout', function(req, res){
 	req.logout();
-	res.redirect('/login');
+	res.redirect('/map');
 });
 
 function isLoggedIn(req, res, next){
