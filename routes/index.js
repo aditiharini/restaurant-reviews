@@ -7,9 +7,6 @@ var Review = require('../schemas/review.js');
 var Restaurant = require('../schemas/restaurant.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
 router.get('/login', function(req, res, next){
 	passport.authenticate('local-login', function(err, user, info){
@@ -37,14 +34,59 @@ router.get('/login', function(req, res, next){
     
 });
 
-
-
-
-
 router.get('/settings', isLoggedIn, function(req, res, next){
     res.render('settings');
     
 });
+
+router.post('/settings', function(request, response, next) {
+
+	if (request.body.id == "ethnicity") {
+		User.findOne({_id:request.user._id}, function(err, user){
+		if(err){
+			throw err;
+		}
+		else {
+			response.send({data: user});
+		}
+
+		});
+	}
+	else if (request.body.id == "buttoninput"){
+		User.findOne({_id: request.user._id}, function(err, person) {
+		if (err) {
+			throw err; 
+		}
+		if (person) {
+			person.gender = request.body.gender; 
+			person.age = request.body.age; 
+			person.ethnicity = request.body.ethnicity; 
+			person.location.state = request.body.state; 
+			person.location.city = request.body.city; 
+			person.dietaryRestrictions.vegetarian = request.body.vegetarian;
+			person.dietaryRestrictions.vegan = request.body.vegan; 
+			person.dietaryRestrictions.kosher = request.body.kosher; 
+			person.dietaryRestrictions.halal = request.body.halal; 
+			person.dietaryRestrictions.nutAllergies = request.body.nutAllergies; 
+ 			person.save(function(err) {
+				if (err) {
+					console.log(err); 
+				}
+				else{
+					console.log(person); 
+					response.send({data: person});
+
+				}
+ 
+			});
+
+
+		}
+		
+	}); 
+	}
+}); 
+
 router.get('/signup', function(req, res, next){
 	res.render('signup', {message:req.flash('signupMessage')});
 });
@@ -157,6 +199,7 @@ router.get('/map', function(req, res, next){
 		loggedIn = true;
 	}
 	// console.log('got to get');
+
 	res.render('map', {loggedIn:loggedIn});
 });
 
