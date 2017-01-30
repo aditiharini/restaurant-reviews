@@ -338,6 +338,7 @@ router.post('/', function(req, res, next){
 						}
 						if(sessionUser){
 							currentUser = sessionUser;
+						var counter1 = reviews.length;
 						reviews.forEach(function(review, index){
 							User.findOne({_id:review.author._id}, function(err, reviewUser){
 								if(err){
@@ -346,60 +347,75 @@ router.post('/', function(req, res, next){
 								if(reviewUser){
 									reviewAuthor = reviewUser;
 									console.log(reviewAuthor);
-							var numMatches = 0;
-							var isValid = false;
-							if(currentUser.dietaryRestrictions.vegetarian===reviewAuthor.dietaryRestrictions.vegetarian){
-								console.log('got to veg');
-								numMatches+=1;
-								isValid = true;
-							}
-							if(currentUser.dietaryRestrictions.vegan===reviewAuthor.dietaryRestrictions.vegan){
-								console.log('got to vegan');
-								numMatches +=1;
-								isValid = true;
-							}
-							if(currentUser.dietaryRestrictions.kosher===reviewAuthor.dietaryRestrictions.kosher){
-								console.log('got to kosher');
-								numMatches +=1;
-								isValid = true;
-
-							}
-							if(currentUser.dietaryRestrictions.halal===reviewAuthor.dietaryRestrictions.kosher){
-								console.log('got to halal');
-								numMatches +=1;
-								isValid = true;
-							}
-							if(isValid){
-								validReviews.push(review);
-								var pair = [review, numMatches];
-								review_match.push(pair);
-
-							}
-
-							if(index==reviews.length-1){
-								if(validReviews.length===0){
-									return res.send({reviews:validReviews});
-								}
-								review_match.sort(function(a,b){
-									if(a[1]>b[1]){
-										return -1;
+									var numMatches = 0;
+									var isValid = false;
+									if(currentUser.dietaryRestrictions.vegetarian===reviewAuthor.dietaryRestrictions.vegetarian){
+										console.log('got to veg');
+										numMatches+=1;
+										isValid = true;
 									}
-									if(a[1]<b[1]){
-										return 1;
+									if(currentUser.dietaryRestrictions.vegan===reviewAuthor.dietaryRestrictions.vegan){
+										console.log('got to vegan');
+										numMatches +=1;
+										isValid = true;
 									}
-									return 0;
+									if(currentUser.dietaryRestrictions.kosher===reviewAuthor.dietaryRestrictions.kosher){
+										console.log('got to kosher');
+										numMatches +=1;
+										isValid = true;
 
-								});
-								var sortedReviews = [];
-								review_match.forEach(function(pair, index){
-									sortedReviews.push(pair[0]);
-									if (index==review_match.length-1){
-										res.send({message:"success", reviews:sortedReviews});
 									}
-								});
-								
-							}
-									return;
+									if(currentUser.dietaryRestrictions.halal===reviewAuthor.dietaryRestrictions.kosher){
+										console.log('got to halal');
+										numMatches +=1;
+										isValid = true;
+									}
+									if(isValid){
+										console.log("got to is valid");
+										validReviews.push(review);
+										var pair = [review, numMatches];
+										review_match.push(pair);
+
+									}
+									setTimeout(function(){
+										console.log(counter1);
+										counter1--;
+										if(counter1===0){
+										if(validReviews.length===0){
+											return res.send({reviews:validReviews});
+										}
+										review_match.sort(function(a,b){
+											if(a[1]>b[1]){
+												return -1;
+											}
+											if(a[1]<b[1]){
+												return 1;
+											}
+											return 0;
+
+										});
+										var sortedReviews = [];
+										var counter2 = review_match.length;
+										review_match.forEach(function(pair, index){
+											sortedReviews.push(pair[0]);
+											setTimeout(function(){
+												counter2--;
+												if (counter2===0){
+													console.log("got to counter 0");
+													console.log("sorted reviews");
+													console.log(sortedReviews);
+													res.send({message:"success", reviews:sortedReviews});
+											}
+
+											},100);
+											
+										});
+										
+									}
+
+									}, 100);
+
+							
 								}
 							});
 			
@@ -415,6 +431,7 @@ router.post('/', function(req, res, next){
 
 				}
 				else{
+					console.log('sent all reviews');
 					res.send({message:"success", reviews:restaurant.reviews});
 				}
 			}

@@ -1,0 +1,39 @@
+      ul {
+        list-style-type: none; 
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        float: right;
+        display: inline;
+        margin-right:5px;
+        /*margin-top:0px;*/
+      }
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+      }
+      li a:hover {
+        background-color: #111;
+      }
+      #search {
+        float: left;
+        height: 48px;
+      }
+      .navbar{
+        background-color:green;
+        padding:0;
+        height: 48px;
+        margin-bottom:0;
+        position: absolute;
+        z-index: 11;
+        width:100%;
+        border-radius: 0px;
+
+        /*margin-left:0;*/
+        /*margin-right:0;*/
+        /*margin:0;*/
+      }

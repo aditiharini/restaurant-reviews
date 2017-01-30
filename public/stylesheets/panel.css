@@ -1,0 +1,14 @@
+.panel{
+        margin-bottom:0;
+        padding:0;
+        border-radius: 0;
+        border-color: #5cb85c;
+        border-left-width: 3px;
+        border-right-width:3px;
+        border-bottom-width: 3px;
+        border-top-width: 0px;
+      }
+
+.panel-success>.panel-heading{
+	background-color: white;
+}

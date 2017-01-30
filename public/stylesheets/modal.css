@@ -1,0 +1,18 @@
+      .modal-content{
+        border-radius:0;
+      }
+
+      .modal-header{
+        border-bottom: 0px;
+        padding-bottom: 0px;
+      }
+      .modal-body{
+        padding-top: 0px;
+      }
+      hr{
+        margin-top:10px;
+      }
+
+      #manageReivewsModalBody{
+        padding-bottom:0px;
+      }
