@@ -212,7 +212,7 @@ router.post('/reviews', function(req, res, next){
 
 });
 
-router.get('/map', function(req, res, next){
+router.get('/', function(req, res, next){
 	console.log(req.user);
 	var loggedIn = false;
 	if(req.user){
@@ -223,7 +223,7 @@ router.get('/map', function(req, res, next){
 	res.render('map', {loggedIn:loggedIn});
 });
 
-router.post('/map', function(req, res, next){
+router.post('/', function(req, res, next){
 	console.log(req.body.query);
 	if(req.body.query){
 		console.log('got to get');

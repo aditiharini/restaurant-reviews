@@ -307,7 +307,7 @@
         $('#viewReviews').hide();
         $.ajax({
           type:'POST',
-          url:'/map',
+          url:'/',
           data:{query:true, id:result.place_id},
           dataType:'json',
           success: function(res){
@@ -439,7 +439,7 @@
               $button.click(function(){
                 $('#viewReviews').empty();
                 $.ajax({
-                  url:'/map',
+                  url:'/',
                   type:'POST',
                   data:{viewAllReviews:true, id:currentRestaurantId},
                   dataType:'json',
@@ -477,7 +477,7 @@
         var rating = $('#rating').val();
         $.ajax({
           type:'POST',
-          url:'/map',
+          url:'/',
           data:{isReview:true, id: currentRestaurantId, content:content, rating:rating},
           dataType:'json',
           success:function(res){
