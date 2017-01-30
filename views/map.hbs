@@ -34,7 +34,7 @@
       }
       .controls {
         background-color: #fff;
-        border-radius: 2px;
+        border-radius: 0px;
         border: 1px solid transparent;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         box-sizing: border-box;
@@ -66,7 +66,7 @@
         height:93%;
         z-index: 10;
         top:48px;
-        background:white;
+        background:#dff0d8;
       }
 
       ul {
@@ -78,6 +78,8 @@
       li {
         float: right;
         display: inline;
+        margin-right:5px;
+        /*margin-top:0px;*/
       }
       li a {
         display: block;
@@ -106,11 +108,60 @@
         position: absolute;
         z-index: 11;
         width:100%;
+        border-radius: 0px;
 
         /*margin-left:0;*/
         /*margin-right:0;*/
         /*margin:0;*/
       }
+/*      #noReviews{
+        background-color: pink;
+        color:blue;
+        z-index: 12;
+      }*/
+      .panel{
+        margin-bottom:0;
+        padding:0;
+        border-radius: 0;
+        border-color: green;
+        border-left-width: 6px;
+        border-right-width:6px;
+        border-bottom-width: 6px;
+        border-top-width: 0px;
+      }
+      .modal-content{
+        border-radius:0;
+      }
+      .form-control{
+        border-radius: 0;
+      }
+      #googleButton{
+        margin-bottom: 20px;
+      }
+      .btn{
+        border-radius: 0px;
+
+      }
+
+      .modal-header{
+        border-bottom: 0px;
+        padding-bottom: 0px;
+      }
+      .modal-body{
+        padding-top: 0px;
+      }
+      hr{
+        margin-top:10px;
+      }
+      .star-rating{
+      }
+      #manageReivewsModalBody{
+        padding-bottom:0px;
+      }
+      .myReview.panel{
+        border-top: 6px;
+      }
+
 
     </style>
     <style>
@@ -118,7 +169,7 @@
         height: 5px;
         border-top: 0;
         background: #c4e17f;
-        border-radius: 5px;
+        border-radius: 0px;
         background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
         background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
         background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
@@ -148,6 +199,62 @@
 
   </head>
   <body>
+
+      <script id="reviewTemplate" type="text/x-handlebars-template">
+      <div class="review" id={{_id}}>
+        <div class='row panel panel-success'>
+          <div class='panel-heading'>
+            <!-- <div class='row'> -->
+              <div>
+                <h3 class='panel-title'>\{{author.name}}</h3>
+              </div>
+              <div class='star-rating'>
+                <span class='fa fa-star-o' data-rating='1'></span>
+                <span class='fa fa-star-o' data-rating='2'></span>
+                <span class='fa fa-star-o' data-rating='3'></span>
+                <span class='fa fa-star-o' data-rating='4'></span>
+                <span class='fa fa-star-o' data-rating='5'></span>
+              </div>
+            <!-- </div> -->
+          </div>
+          <div class='panel-body'>
+            <!-- <p class='info'><b>Rating: </b>\{{rating}}</p> -->
+            <p class='info'><b> Review: </b>\{{content}}</p>
+
+            <!-- <button class="btn btn-primary update" id={{_id}}>Update</button>
+            <button class = "btn btn-danger delete" id={{_id}}>Delete</button> -->
+          </div>
+        </div>
+      </div>
+      </script>
+
+      <script id="myReviewsTemplate" type="text/x-handlebars-template">
+      <div class="myReview" id="\{{_id}}">
+        <div class='row panel panel-success'>
+          <div class='panel-heading'>
+            <!-- <div class='row'> -->
+              <div>
+                <h3 class='panel-title'>\{{restaurantName}}</h3>
+              </div>
+<!--               <div class='star-rating'>
+                <span class='fa fa-star-o' data-rating='1'></span>
+                <span class='fa fa-star-o' data-rating='2'></span>
+                <span class='fa fa-star-o' data-rating='3'></span>
+                <span class='fa fa-star-o' data-rating='4'></span>
+                <span class='fa fa-star-o' data-rating='5'></span>
+              </div> -->
+            <!-- </div> -->
+          </div>
+          <div class='panel-body'>
+            <!-- <p class='info'><b>Rating: </b>\{{rating}}</p> -->
+            <p class='info'><b> Review: </b>\{{content}}</p>
+
+            <!-- <button class="btn btn-primary update" id={{_id}}>Update</button> -->
+            <button class = "btn btn-danger delete" id="\{{_id}}">Delete</button>
+          </div>
+        </div>
+      </div>
+    </script>
       <script>
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
@@ -159,6 +266,7 @@
       var markers = [];
       var currentRestaurantId;
       var bounds;
+      var idToInfo = {};
 
 
       function initMap() {
@@ -252,6 +360,7 @@
           position: place.geometry.location
         });
         markers.push(marker);
+        // idToInfo[place.place_id] = place.name;
         console.log(place.geometry.location.lat());
         //something weird happening here
         bounds.extend(new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng()));
@@ -272,8 +381,9 @@
           var notExistsHtml = '<div id="content">' +
       '<p>' + place.name + '</p>'+ 
       '<p>' + place.formatted_address + '</p>' +
-      '<p> No existing reviews </p>' + 
-      '<button class = "btn btn-primary createReview" id = ' + place.place_id + '>' + 'Write a Review</button>'+
+      '<p id="noReviewsIndicator"> No existing reviews </p>' + 
+      '<button class = "btn btn-success viewReviews" style="display:none;" id = ' + place.place_id + '>' + 'View Reviews</button>'+
+      '<button class = "btn btn-primary createReview"  id = ' + place.place_id + '>' + 'Write a Review</button>'+
       '</div>';
           if(restaurantExists){
             infowindow.setContent(existsHtml);
@@ -301,27 +411,66 @@
         currentRestaurantId = id;
         $.ajax({
           type:'POST',
-          data:{viewReview:true, id:id},
+          data:{viewReview:true, id:currentRestaurantId},
           dataType:'json',
           success:function(res){
             console.log('got to ajax view reviews');
             $('#viewReviews').empty();
-            $('#viewReviews').show();
+            
+            var reviews = res.reviews;
             var template = $('#reviewTemplate').html();
             var compiledTemplate = Handlebars.compile(template);
-            var reviews = res.reviews;
-            reviews.forEach(function(review){
-              var output = compiledTemplate(review);
-              $('#viewReviews').append(output);
+            if(reviews.length>0){
+              reviews.forEach(function(review, index){
+                var output = compiledTemplate(review);
+                $('#viewReviews').append(output);
+                setRating(review.rating);
+                if(index==reviews.length-1){
+                  $('#viewReviews').show();
 
-            });
+                }
+
+              });
+            }
+            else{
+              var $div = $('<div></div>', {id:"noReviews"});
+              var $text = $('<p></p>').text("No relevant reviews");
+              var $button = $('<button></button>', {id:"loadAllReviews", class:"btn btn-primary"}).text("Load all reviews");
+              $button.click(function(){
+                $('#viewReviews').empty();
+                $.ajax({
+                  url:'/map',
+                  type:'POST',
+                  data:{viewAllReviews:true, id:currentRestaurantId},
+                  dataType:'json',
+                  success:function(newRes){
+                    var allReviews = newRes.reviews;
+                    console.log(allReviews);
+                    allReviews.forEach(function(thisReview, thisIndex){
+                      var newOutput = compiledTemplate(thisReview);
+                      $('#viewReviews').append(newOutput);
+                      setRating(thisReview.rating);
+                      if(thisIndex==allReviews.length-1){
+                        $('#viewReviews').show();
+                      }
+                    });
+                    
+                  }
+
+              });
+
+              });
+              $div.append($text, $button);
+              $('#viewReviews').append($div);
+              $('#viewReviews').show();
+            }
           }
 
         });
 
       });
       // need to check if user is logged in
-      $('#submitReview').on('click', function(e){
+      $('#submitReview').click(function(){
         var id = $(this).attr('id');
         console.log(id);
         var content = $('#reviewContent').val();
@@ -337,13 +486,18 @@
             if(!res.loggedIn){
               $('#writeAReview').modal('hide'); 
               $('#loginModal').modal('show');
+              return;
             }
-            else if(res.message==='success'){
+            if(res.message=='success'){
               $('#reviewForm').hide();
               $('#writeAReview').modal('hide');
+              $('.viewReviews, #' + currentRestaurantId).show();
+              $('#noReviewsIndicator').hide();
+              return;
             }
-            else{
+            if(res.message=='error'){
               alert("please try again");
+              return;
             }
 
           }
@@ -369,7 +523,7 @@
       }
 
       $(document).ready(function(){
-          $('#loginButton').click(function(){
+            $('#loginButton').click(function(){
             $('#loginAlert').empty();
             $('#loginAlert').hide();
             console.log('login click event triggered');
@@ -386,11 +540,13 @@
                 console.log(res.message);
                 if(res.message=='success'){
                   $('#loginModal').modal('hide');
-                  $('#navbarList').append('<li> <a href="#" data-toggle="modal" data-target = "#profile" id="navbarProfile"> Profile </a></li>');
-                  $('#navbarList').append('<li> <a id = "navbarLogout" href="/logout"> Log Out </a> </li>');
-                  $('#navbarProfile').show();
-                  $('#navbarLogout').show();
                   $('#navbarLogin').hide();
+                  $('#navbarList').append('<li> <a href="#" data-toggle="modal" data-target = "#profile" id="navbarProfile"> Profile </a></li>');
+                  $('#navbarList').append('<li> <a href="#" data-toggle="modal" data-target = "#manageReviewsModal" id="navbarManageReviews"> Manage Reviews </a></li>');
+                
+                  $('#navbarList').append('<li> <a id = "navbarLogout" href="/logout"> Log Out </a> </li>');
+
+
 
                 }
                 // var alertHtml = '<div class="alert alert-danger">' + 
@@ -408,14 +564,10 @@
           });
         });
           $('#loginToRegister').click(function(){
-            // $('#loginModal').modal('hide');
-            
+            $('#loginModal').modal('hide');
             $('#signupModal').modal('show');
-
- 
-            
-
           });
+
 
           $('#signupSubmit').click(function(){
               $('#signupAlert').empty();
@@ -444,9 +596,87 @@
               });
           });
       });
+      $(document).on('click', '#navbarManageReviews', function(e){
+        $.ajax({
+        url:'/reviews',
+        type:'GET',
+        dataType:'json',
+        success: function(res){
+          $('#userReviews').empty();
+          $('#manageReviewsErrors').empty();
+          console.log('got to manage reviews ajax');
+          if(res.message=='error'){
+            var $errorText = $('<p></p>').text("There was an error loading your reviews. Please try again");
+            $('#userReviews').append($errorText);
+            return;
+          }
+          if(res.message=='no reviews'){
+            var $noReviewText = $('<p></p>').text("You haven't written any reviews");
+            $('#userReviews').append($noReviewText);
+            return;
+
+          }
+          if(res.message=='success'){
+            var reviews = res.reviews;
+            var thisTemplate = $('#myReviewsTemplate').html();
+
+            var compiledTemplate = Handlebars.compile(thisTemplate);
+            console.log("got past compiledTemplate");
+            reviews.forEach(function(review){
+              service.getDetails({placeId:review.restaurantId}, function(place, status){
+                if(status===google.maps.places.PlacesServiceStatus.OK){
+                  var modifiedReview = {};
+                  modifiedReview.content = review.content;
+                  modifiedReview.restaurantName = place.name;
+                  modifiedReview._id = review._id;
+                  // console.log(review.restaurantName);
+                  // console.log(place.name);
+                  console.log(modifiedReview);
+                  var output = compiledTemplate(modifiedReview);
+                  $('#userReviews').append(output);
+
+                }
+
+              });
+              
+            });
+
+
+          }
+
+        }
+      });
+
+      });
+
+      $(document).on('click', '.delete', function(e){
+          $('#manageReviewsErrors').empty();
+          var id = this.id;
+          $.ajax({
+            type:'POST',
+            url:'/reviews',
+            data:{action:'delete', id:id},
+            dataType:'json',
+            success:function(res){
+              console.log('got here');
+              if(res.message=='success'){
+                $('div#' + id + '.myReview').remove();
+              }
+              else{
+                var $text = $('<p></p>').text("Error deleting review");
+                $("manageReviewsErrors").append($text);
+                $("manageReviewsErrors").show();
+                console.log(error);
+              }
+
+            }
+
+          });
+
+        });
 
     </script>
-    <div class = 'navbar' id="navigation">
+    <nav class = 'navbar navbar-static top' id="navigation">
       <div id="search">
         <input id="pac-input" class="controls" type="text" placeholder="Enter a location"></input> 
         <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button> 
@@ -454,12 +684,13 @@
       <ul id= "navbarList" class = 'nav navbar-nav navbar-right'> 
       {{#if loggedIn}}
         <li id='navbarProfile'> <a href="#" data-toggle="modal" data-target = "#profile" > Profile </a></li>
+        <li id= 'navbarManageReviews'><a href = "#" data-toggle="modal" data-target ="#manageReviewsModal"> Manage Reviews </a></li>
         <li id = 'navbarLogout'> <a  href="/logout"> Log Out </a> </li>
       {{else}}
         <li id= 'navbarLogin'> <a href="#" data-toggle="modal" data-target="#loginModal" > Log in/Register </a></li>
       {{/if}}
       </ul>
-    </div> 
+    </nav> 
      
 <!--     <div id="header">
     
@@ -470,32 +701,25 @@
 
     </div>
 
-        
-     
-
-  
     <!-- <div id='mapOuter'> -->
     <div id="map">
     </div>
-
-
-
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLuZYJktjaZ8fwnkNNsm9dRtRqyIwHo4&libraries=places&callback=initMap" async defer></script>
     <div id='loginModal' class = 'modal fade' role='dialog'>
-      <div class='modal-dialog' role='document'>
-        <div class = 'modal-content'>
-          <div class='modal-header'>
-            <button id = 'loginClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h2 class='modal-title' id="signInTitle">Please Sign In</h2>
-          </div>
+        <div class='modal-dialog' role='document'>
+            <div class = 'modal-content'>
+                <div class='modal-header'>
+                    <button id = 'loginClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class='modal-title' id="signInTitle">Please Sign In</h2>
+                </div>
           <div id='loginModalBody' class='modal-body'>
             <!-- <form method='POST' action='/login' id='loginForm'> -->
                 <div hidden id = 'loginAlert' class='alert alert-danger'>
                   <!-- <strong>Error!</strong> {{message}} -->
                 </div>
               <fieldset>
-                <hr class="colorgraph">
+                <hr>
                 <div class="form-group">
                   <input type="username" name="username" id="loginUsername" class="form-control input-lg" placeholder="Username"></input>
                 </div>
@@ -505,12 +729,11 @@
                 <div style="text-align:center" class='form-group'>
                   <h5>or</h5>
                 </div>
-                <a href = '/auth/google' class="btn btn-block btn-social btn-google">
+                <a href = '/auth/google' id='googleButton' class="btn btn-block btn-social btn-google">
                   <span class="fa fa-google"></span>
                   Sign in with Google
                 </a>
-                <hr class="colorgraph">
-                <div class="row">
+                <div class="row form-group">
                   <div class="col-xs-6 col-sm-6 col-md-6">
                       <button id='loginButton' type="submit" class="btn btn-lg btn-success btn-block">Log in</button>
                   </div>
@@ -523,45 +746,40 @@
           </div>
       </div>
     </div>
+    </div>
 
     <div id='signupModal' class = 'modal fade' role='dialog'>
-      <div class='modal-dialog' role='document'>
-        <div class='modal-content'>
-          <div class='modal-header'>
-            <button id = 'signupClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h2 class='modal-title' id="signupTitle">Please Sign Up</h2>
-          </div>
-          <div id='loginModalBody' class='modal-body'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button id = 'signupClose' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class='modal-title' id="signupTitle">Please Sign Up</h2>
+                </div>
+                <div id='signupModalBody' class='modal-body'>
             <!-- <form method='POST' action='/login' id='loginForm'> -->
-            <div hidden id = 'signupAlert' class='alert alert-danger'>
+                <div hidden id = 'signupAlert' class='alert alert-danger'>
               <!-- <strong>Error!</strong> {{message}} -->
-            </div>
-            <hr class="colorgraph">
-                <div class="form-group">
-                    <div class="form-group">
-                        <input id = 'signupName' type="text" name="name" id="name" class="form-control input-lg" placeholder="Name" tabindex="1">
-                    </div>
                 </div>
+                <hr>
+                  <div class="form-group">
+                      <input id = 'signupName' type="text" name="name" id="name" class="form-control input-lg" placeholder="Name" tabindex="1">
+                  </div>
+               
 
-                <div class="form-group">
-                    <input id='signupUsername' type="username" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="4">
-                </div>
-
-                <div class="form-group">
-                    <div class="form-group">
+                  <div class="form-group">
+                      <input id='signupUsername' type="username" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="4">
+                  </div>
+                  <div class="form-group">
                         <input id='signupPassword' type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
-                    </div>
-                </div>
+                  </div>
             
-            <hr class="colorgraph">
-            <div class="form-group">
-                <div><button id='signupSubmit' type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7">Register</div>
-            </div>
+                <div class="form-group">
+                    <div><button id='signupSubmit' type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7">Register</div>
+                </div>
             <!-- </form> -->
           </div>
         </div>
       </div>
-    </div>
     </div>
 
 
@@ -589,6 +807,33 @@
       </div>
     </div>
     </div>
+    <div id="manageReviewsModal" class="modal fade" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times; </span></button>
+            <h2 class="modal-title" id="manageReviewsTitle">Manage Reviews</h2>
+          </div>
+          <div id = "manageReivewsModalBody" class="modal-body">
+            <div hidden id="manageReviewsErrors">
+
+            </div>
+            <div id="userReviews">
+
+            </div>
+          <!-- manage reviews content goes here -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // manage reviews script
+      // show all reviews
+
+        
+
+    </script>
 
     <div id="profile" class = "modal fade" role = "dialog">
       <div class="modal-dialog" role="document">
@@ -808,24 +1053,20 @@
 
     </script>
     <!-- infowindow content -->
+    <script>
+      function setRating(rating){
+        console.log('got to set rating');
+        $stars = $('.star-rating .fa');
+        $stars.each(function(){
+          if(parseInt($(this).data('rating'))<=parseInt(rating)){
+            $(this).removeClass('fa-star-o').addClass('fa-star');
+          }
+
+        });
+
+      }
+    </script>
 
 
 
     <!-- infowindow content -->
-    <script id="reviewTemplate" type="text/x-handlebars-template">
-           <div class="review" id={{_id}}>
-        <div class='row panel panel-default'>
-          <div class='panel-heading'>
-            <h3 class='panel-title'>\{{author.name}}</h3>
-          </div>
-          <div class='panel-body'>
-            <p class='info'><b>Rating: </b>\{{rating}}</p>
-            <p class='info'><b> Review: </b>\{{content}}</p>
-            <!-- <button class="btn btn-primary update" id={{_id}}>Update</button>
-            <button class = "btn btn-danger delete" id={{_id}}>Delete</button> -->
-          </div>
-        </div>
-      </div>
-    </script>
-  </body>
-</html>

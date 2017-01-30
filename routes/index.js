@@ -136,52 +136,76 @@ router.get('/auth/google/callback', passport.authenticate('google'), function(re
 
 router.get('/reviews', isLoggedIn, function(req, res, next){
 	console.log(req.user);
+	console.log("got to get user reviews");
 	Review.find({'author._id':req.user._id}, function(err, reviews){
 		if(err){
 			console.log(err);
-			res.render('reviews', {hasReviews: false, message:"There was an error loading your reviews"});
+			res.send({message:'error'});
 		}
-		else if(reviews){
+		else if(reviews.length>0){
+			var reviewRestaurant = [];
 			console.log(reviews);
-			res.render('reviews', {hasReviews: true, reviews:reviews});
+			res.send({message:'success', reviews: reviews});
 		}
 		else{
 			console.log("no reviews");
-			res.render('reviews', {hasReviews: false, message:'You have not made any reviews yet.'});
+			res.send({message:'no reviews'});
 		}
 
 	});
 	
 });
 router.post('/reviews', function(req, res, next){
-	if(req.body.action=='create'){
-		var review = {
-			restaurant: req.body.restaurant,
-			cuisine: req.body.cuisine,
-			rating: req.body.rating,
-			author: req.user,
-			content: req.body.content,
-			location:{city:req.body.city, state:req.body.state}
-		};
-		Review.create(review, function(err, review){
-			if(err){
-				return res.send({message:err});
-			}
-			if(review){
-				return res.send({newReview:review});
-			}
-			return res.send({message:"unknown error"});
-		});
-	}
 	if(req.body.action=='delete'){
-		Review.remove({_id: req.body.id}, function(err){
+		Review.findOne({_id:req.body.id}, function(err, review){
 			if(err){
 				console.log(err);
-				res.send({wasDeleted: false, message:"There was an error deleting this review"});
+				res.send({message:"error"});
+
 			}
 			else{
-				res.send({wasDeleted: true, message:"successfully deleted"});
+				Restaurant.findOne({id:review.restaurantId}, function(err, restaurant){
+					if(err){
+						console.log(err);
+						return res.send({message:"error"});
+					}
+					else{
+						Review.remove({_id:req.body.id}, function(err){
+							if(err){
+								console.log(err);
+								return;
+							}
+							var allReviews = restaurant.reviews;
+							if(allReviews.length==1){
+								//remove this restaurant
+								Restaurant.remove({_id:restaurant._id}, function(err){
+									if(err){
+										console.log(err);
+										return res.send({message:"error"});
+									}
+									return res.send({message:'success'});
+								
+								});
+							}
+							else{
+								var removedReview = restaurant.reviews.id(req.body.id).remove();
+								restaurant.save(function(err){
+									if(err){
+										console.log(err);
+										return res.send({message:"error"});
+									}
+									return res.send({message:"success"});
+								});
+								// delete this review from the list
+							}
+						});
+						// delete the review
+
+					}
+
+				});
 			}
+
 		});
 
 	}
@@ -232,7 +256,8 @@ router.post('/map', function(req, res, next){
 		var reviewObj = {
 			content:req.body.content,
 			rating:req.body.rating,
-			author:req.user
+			author:req.user,
+			restaurantId:req.body.id
 
 		};
 		Review.create(reviewObj, function(err, review){
@@ -250,6 +275,7 @@ router.post('/map', function(req, res, next){
 						restaurant.reviews.push(review);
 						restaurant.save(function(err){
 							if(err){
+								console.log(err);
 								res.send({loggedIn:true, message:'error'});
 							}
 							else{
@@ -261,7 +287,7 @@ router.post('/map', function(req, res, next){
 
 					}
 					else{
-						Restaurant.create({id:req.body.id}, function(err, newRestaurant){
+						Restaurant.create({id:req.body.id, name:req.body.name}, function(err, newRestaurant){
 							if(err){
 								console.log(err);
 								return res.send({loggedIn:true, message:'error'});
@@ -297,7 +323,7 @@ router.post('/map', function(req, res, next){
 			if(err){
 				console.log(err);
 			}
-			else{
+			else if(restaurant){
 				console.log(restaurant);
 				if(req.user){
 					var currentUser;
@@ -322,9 +348,6 @@ router.post('/map', function(req, res, next){
 									console.log(reviewAuthor);
 							var numMatches = 0;
 							var isValid = false;
-
-
-
 							if(currentUser.dietaryRestrictions.vegetarian===reviewAuthor.dietaryRestrictions.vegetarian){
 								console.log('got to veg');
 								numMatches+=1;
@@ -371,7 +394,7 @@ router.post('/map', function(req, res, next){
 								review_match.forEach(function(pair, index){
 									sortedReviews.push(pair[0]);
 									if (index==review_match.length-1){
-										res.send({reviews:sortedReviews});
+										res.send({message:"success", reviews:sortedReviews});
 									}
 								});
 								
@@ -392,12 +415,28 @@ router.post('/map', function(req, res, next){
 
 				}
 				else{
-					res.send({reviews:restaurant.reviews});
+					res.send({message:"success", reviews:restaurant.reviews});
 				}
+			}
+			else{
+				console.log("restaurant not found");
+				res.send({message:"error"});
 			}
 		});
 
 		
+	}
+	if(req.body.viewAllReviews){
+		console.log('got to view all reviews');
+		Restaurant.findOne({id:req.body.id}, function(err, restaurant){
+			if(err){
+				throw err;
+			}
+			if(restaurant){
+				res.send({reviews:restaurant.reviews});
+			}
+
+		});
 	}
 
 });
