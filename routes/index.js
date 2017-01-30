@@ -130,7 +130,7 @@ router.get('/auth/google', passport.authenticate('google', {scope:['profile emai
 
 router.get('/auth/google/callback', passport.authenticate('google'), function(req,res){
 	console.log(req.user);
-	res.redirect('/map');
+	res.redirect('/');
 
 });
 
@@ -443,7 +443,7 @@ router.post('/', function(req, res, next){
 
 router.get('/logout', function(req, res){
 	req.logout();
-	res.redirect('/map');
+	res.redirect('/');
 });
 
 function isLoggedIn(req, res, next){
