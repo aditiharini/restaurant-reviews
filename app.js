@@ -12,8 +12,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var index = require('./routes/index');
-mongoose.connect('mongodb://bookitnow:eY2E8z6usp79i87JMK3iwgRJU1pYvWg5vQDXKvS707kQM03D6ml290lPHeBMAaIZWHWWRIQ5LEa6ehz7I1tJvQ==@bookitnow.documents.azure.com:10250/?ssl=true&sslverifycertificate=false');
+mongoose.connect('mongodb://heroku_9wgg59g6:gon5ut9bo3o973ojme48cu9f5c@ds137729.mlab.com:37729/heroku_9wgg59g6');
 //'mongodb://localhost/restaurantReviews'
+//mongodb://bookitnow:eY2E8z6usp79i87JMK3iwgRJU1pYvWg5vQDXKvS707kQM03D6ml290lPHeBMAaIZWHWWRIQ5LEa6ehz7I1tJvQ==@bookitnow.documents.azure.com:10250/?ssl=true&sslverifycertificate=false
 
 
 var app = express();
