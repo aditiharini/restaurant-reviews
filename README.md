@@ -32,6 +32,9 @@ http://passportjs.org/
 http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/#.WJBU5bYrJTY
 https://github.com/barberboy/passport-google-oauth2-example
 
+passport-google-oauth
+https://github.com/jaredhanson/passport-google-oauth
+
 Google login button
 https://lipis.github.io/bootstrap-social/
 
@@ -40,6 +43,7 @@ http://www.w3schools.com/jsref/jsref_obj_regexp.asp
 
 Clientside Handlebars
 https://dreamingin.codes/article/client-side-templating-with-handlebars/
+
 
 NPM dependencies:
 bcrypt, bcrypt-nodejs, body-parser, connect-flash, cookie-parser, debug, express, espress-session, hbs, mongoose, morgan, passport, passport-google-oauth, passport-local, serve-favicon
