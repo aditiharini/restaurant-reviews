@@ -41,7 +41,7 @@ http://www.w3schools.com/jsref/jsref_obj_regexp.asp
 Clientside Handlebars
 https://dreamingin.codes/article/client-side-templating-with-handlebars/
 
-NPM dependencies
+NPM dependencies:
 bcrypt, bcrypt-nodejs, body-parser, connect-flash, cookie-parser, debug, express, espress-session, hbs, mongoose, morgan, passport, passport-google-oauth, passport-local, serve-favicon
 
 
