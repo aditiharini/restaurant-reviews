@@ -12,3 +12,25 @@
 .panel-success>.panel-heading{
 	background-color: white;
 }
+
+.myReview>.panel{
+    border-left-width: 0px;
+    border-right-width:0px;
+    border-bottom-width: 1px;
+    border-top-width: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+}
+.myReview>.panel>.panel-heading{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.myReview>.panel>.panel-body{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#manageReviewsLine{
+    margin-bottom: 1px;
+}

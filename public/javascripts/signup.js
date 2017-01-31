@@ -6,6 +6,9 @@ $(document).ready(function(){
               var name = $('#signupName').val();
               var username = $('#signupUsername').val();
               var password = $('#signupPassword').val();
+              $('#signupName').val('');
+              $('#signupUsername').val('');
+              $('#signupPassword').val('');
               $.ajax({
                 type:'POST',
                 url: '/signup',

@@ -5,6 +5,8 @@ $(document).ready(function(){
             console.log('login click event triggered');
             var username=$('#loginUsername').val();
             var password = $('#loginPassword').val();
+            $('#loginUsername').val('');
+            $('#loginPassword').val('');
             $.ajax({
               type:'GET',
               url:'/login',
@@ -40,8 +42,23 @@ $(document).ready(function(){
           });
         });
           $('#loginToRegister').click(function(){
+
             $('#loginModal').modal('hide');
             $('#signupModal').modal('show');
+            $('#loginUsername').val('');
+            $('#loginPassword').val('');
+
+          });
+
+          $('.close').click(function(){
+            $('#loginUsername').val('');
+            $('#loginPassword').val('');
+            $('#signupName').val('');
+            $('#signupUsername').val('');
+            $('#signupPassword').val('');
+            $('#reviewContent').val('');
+
+
           });
 
 });

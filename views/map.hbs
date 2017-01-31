@@ -15,6 +15,7 @@
     <link rel='stylesheet' href='./stylesheets/navbar.css'>
     <link rel='stylesheet' href='./stylesheets/viewReviews.css'>
     <link rel='stylesheet' href='./stylesheets/panel.css'>
+    <link rel='stylesheet' href='./stylesheets/stars.css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -185,6 +186,20 @@
         </div>
       </div>
     </div>
+    <div id="confirmDeleteModal" class = "modal fade" role="dialog">
+      <div class="modal-dialog" role='document'>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class='modal-title' id="confirmDeleteTitle">Confirm Delete</h2>
+          </div>
+          <div class="modal-body">
+            <h4> Are you sure you want to delete this review? </h4>
+            <button class="btn btn-success confirmDeleteButton">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <div id='writeAReview' class = 'modal fade' role='dialog'> 
@@ -196,14 +211,23 @@
           </div>
 
            <div class='modal-body'>
+
               <fieldset>
-                <div class="form-group">
-                            <input type="text" id="reviewContent" class="form-control input-lg" placeholder="Review"></input>
+                <hr id="starLine">
+                
+                <div class="reviewStars" >
+                  <fieldset class="rating">
+                      <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" ></label>
+                      <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" ></label>
+                      <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" ></label>
+                      <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" ></label>
+                      <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" ></label>
+                  </fieldset>
                 </div>
                 <div class="form-group">
-                            <input type="text" id="rating" class="form-control input-lg" placeholder="Rating"></input>
+                  <textarea rows="10" type="text" id="reviewContent" class="form-control input-lg" placeholder="Review"></textarea>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6">
+                <div>
                       <button type="submit" class="btn btn-lg btn-success btn-block" id="submitReview">Submit Review</button>
                 </div>
               </fieldset>
@@ -219,6 +243,7 @@
             <h2 class="modal-title" id="manageReviewsTitle">Manage Reviews</h2>
           </div>
           <div id = "manageReivewsModalBody" class="modal-body">
+          <hr id="manageReviewsLine">
             <div hidden id="manageReviewsErrors">
 
             </div>

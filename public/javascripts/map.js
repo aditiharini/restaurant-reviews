@@ -247,10 +247,26 @@
       });
       // need to check if user is logged in
       $('#submitReview').click(function(){
+        $('#reviewContent').val('');
         var id = $(this).attr('id');
         console.log(id);
         var content = $('#reviewContent').val();
-        var rating = $('#rating').val();
+        var rating;
+          if($('#star1').is(':checked')){
+            rating=1;
+          }
+          if($('#star2').is(':checked')){
+            rating=2;
+          }
+          if($('#star3').is(':checked')){
+            rating=3;
+          }
+          if($('#star4').is(':checked')){
+            rating=4;
+          }
+          if($('#star5').is(':checked')){
+            rating=5;
+          }
         if(currentSubmitReviewAjax){
           currentSubmitReviewAjax.abort();
         }

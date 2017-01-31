@@ -3,7 +3,7 @@
       }
 
       .modal-header{
-        border-bottom: 0px;
+        border-bottom: 1px gray;
         padding-bottom: 0px;
       }
       .modal-body{
