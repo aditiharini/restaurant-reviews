@@ -66,7 +66,7 @@ passport.use('local-login', new LocalStrategy({
 passport.use(new GoogleStrategy({
 	clientID:'1062406632261-i6pjf2akod9nr4ur9konj4uqiff02acd.apps.googleusercontent.com',
 	clientSecret:'p2QU9w7fymTv9-zB4KpNpWfJ',
-	callbackURL:'https://rest-au-rant.herokuapp.com//auth/google/callback',
+	callbackURL:'https://rest-au-rant.herokuapp.com/auth/google/callback',
 }, function(token, refreshToken, profile, done){
 	// console.log(profile);
 	// done(null, profile);
