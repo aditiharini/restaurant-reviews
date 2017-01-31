@@ -196,7 +196,7 @@
               reviews.forEach(function(review, index){
                 var output = compiledTemplate(review);
                 $('#viewReviews').append(output);
-                setRating(review.rating);
+                setRating(review._id, review.rating);
                 setTimeout(function(){
                   counter--;
                   if(counter===0){
@@ -225,7 +225,7 @@
                     allReviews.forEach(function(thisReview, thisIndex){
                       var newOutput = compiledTemplate(thisReview);
                       $('#viewReviews').append(newOutput);
-                      setRating(thisReview.rating);
+                      setRating(thisReview._id, thisReview.rating);
                       if(thisIndex==allReviews.length-1){
                         $('#viewReviews').show();
                       }
@@ -294,7 +294,8 @@
               return;
             }
             if(res.message=='error'){
-              alert("please try again");
+              $('#writeAReviewAlert').append('<p>' + 'please try again' + '</p>');
+              $('#writeAReviewAlert').show();
               return;
             }
             if (res.message==='Not a Valid Input'){
@@ -326,9 +327,11 @@
         markers = [];
       }
 
-      function setRating(rating){
+      function setRating(id,rating){
         console.log('got to set rating');
-        $stars = $('.star-rating .fa');
+        console.log(id);
+        $stars = $( '#' + id + '.fa');
+        console.log($stars);
         $stars.each(function(){
           if(parseInt($(this).data('rating'))<=parseInt(rating)){
             $(this).removeClass('fa-star-o').addClass('fa-star');
@@ -346,8 +349,8 @@
           }
         });
 
-        $('#viewReviews').click(function(){
-          $(this).fadeOut();
+        $('#map').click(function(){
+          $('#viewReviews').fadeOut();
         });
 
       });

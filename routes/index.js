@@ -376,24 +376,29 @@ router.post('/', function(req, res, next){
 									console.log(reviewAuthor);
 									var numMatches = 0;
 									var isValid = false;
-									if(currentUser.dietaryRestrictions.vegetarian===reviewAuthor.dietaryRestrictions.vegetarian){
+									if(currentUser.dietaryRestrictions.vegetarian===true && reviewAuthor.dietaryRestrictions.vegetarian===true){
 										console.log('got to veg');
 										numMatches+=1;
 										isValid = true;
 									}
-									if(currentUser.dietaryRestrictions.vegan===reviewAuthor.dietaryRestrictions.vegan){
+									if(currentUser.dietaryRestrictions.vegan===true && reviewAuthor.dietaryRestrictions.vegan===true){
 										console.log('got to vegan');
 										numMatches +=1;
 										isValid = true;
 									}
-									if(currentUser.dietaryRestrictions.kosher===reviewAuthor.dietaryRestrictions.kosher){
+									if(currentUser.dietaryRestrictions.kosher===true && reviewAuthor.dietaryRestrictions.kosher===true){
 										console.log('got to kosher');
 										numMatches +=1;
 										isValid = true;
 
 									}
-									if(currentUser.dietaryRestrictions.halal===reviewAuthor.dietaryRestrictions.kosher){
+									if(currentUser.dietaryRestrictions.halal===true && reviewAuthor.dietaryRestrictions.halal===true){
 										console.log('got to halal');
+										numMatches +=1;
+										isValid = true;
+									}
+									if(currentUser.dietaryRestrictions.nutAllergies===true && reviewAuthor.dietaryRestrictions.nutAllergies===true){
+										console.log('got to nut allergies');
 										numMatches +=1;
 										isValid = true;
 									}

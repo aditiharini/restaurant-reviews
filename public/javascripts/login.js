@@ -68,5 +68,11 @@ $(document).ready(function(){
 
           });
 
+          $('#loginPassword').keypress(function(e){
+          if(e.keyCode==13){
+            $('#loginButton').click();
+          }
+        });
+
 });
 
