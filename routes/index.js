@@ -272,7 +272,7 @@ router.post('/', function(req, res, next){
 			console.log('no user');
 			return res.send({loggedIn:false});
 		}
-		else if (/<[a-z][\s\S]*>/i.test(req.body.rating) || /<[a-z][\s\S]*>/i.test(req.body.content)  || /\D/.test(req.body.rating) || forwardslash.test(req.body.content) || forwardslash.test(req.body.rating)) {
+		else if ( /<[a-z][\s\S]*>/i.test(req.body.content)  ||  forwardslash.test(req.body.content)) {
 			return res.send({loggedIn: true, message: "Not a Valid Input"}); 
 		}
 		else{
