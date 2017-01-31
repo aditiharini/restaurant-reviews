@@ -1,3 +1,5 @@
+      // a lot of this is from the google maps/places api
+      //https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder
       var map;
       var infowindow;
       var service;
