@@ -21,8 +21,13 @@ $(document).ready(function(){
                   $('#navbarLogin').hide();
                   $('#navbarList').append('<li> <a href="#" data-toggle="modal" data-target = "#profile" id="navbarProfile"> Profile </a></li>');
                   $('#navbarList').append('<li> <a href="#" data-toggle="modal" data-target = "#manageReviewsModal" id="navbarManageReviews"> Manage Reviews </a></li>');
-                
                   $('#navbarList').append('<li> <a id = "navbarLogout" href="/logout"> Log Out </a> </li>');
+                  // $('#loginModal').modal('hide');
+                  // $('#menu').show(); 
+                  // $('#navbarList').append('<div class="dropdown" id="menu"> <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Menu <span class="caret"></span></button> <ul class="dropdown-menu"> <li id = "navbarAbout"><a href = "#" data-toggle = "modal" data-target = "#about"> About </a></li> <li id="navbarProfile"> <a href="#" data-toggle="modal" data-target = "#profile" onclick = "LoadProfile()"> Profile </a></li> <li id = "navbarLogout"> <a  href="/logout"> Log Out </a> </li></ul></div>');
+                  // $('#navbarAbout').hide(); 
+                  // $('#navbarLogin').hide();
+                  LoadProfile();
 
 
 
@@ -57,6 +62,7 @@ $(document).ready(function(){
             $('#signupUsername').val('');
             $('#signupPassword').val('');
             $('#reviewContent').val('');
+            $('input:radio[name=rating]:checked').prop('checked', false);
 
 
           });

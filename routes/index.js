@@ -49,37 +49,45 @@ router.post('/settings', function(request, response, next) {
 		});
 	}
 	else if (request.body.id == "buttoninput"){
-		User.findOne({_id: request.user._id}, function(err, person) {
-		if (err) {
-			throw err; 
-		}
-		if (person) {
-			person.gender = request.body.gender; 
-			person.age = request.body.age; 
-			person.ethnicity = request.body.ethnicity; 
-			person.location.state = request.body.state; 
-			person.location.city = request.body.city; 
-			person.dietaryRestrictions.vegetarian = request.body.vegetarian;
-			person.dietaryRestrictions.vegan = request.body.vegan; 
-			person.dietaryRestrictions.kosher = request.body.kosher; 
-			person.dietaryRestrictions.halal = request.body.halal; 
-			person.dietaryRestrictions.nutAllergies = request.body.nutAllergies; 
- 			person.save(function(err) {
+		var space = new RegExp(" "); 
+		if (/\D/.test(request.body.age)||/\d/.test(request.body.city)||/<[a-z][\s\S]*>/i.test(request.body.age) || /<[a-z][\s\S]*>/i.test(request.body.city) || space.test(request.body.age)) {
+			response.send({message: 'Not a Valid Input', data: null}); 
+		} 
+		else{
+			User.findOne({_id: request.user._id}, function(err, person) {
 				if (err) {
-					console.log(err); 
+					throw err; 
 				}
-				else{
-					console.log(person); 
-					response.send({data: person});
+				if (person) {
+					person.gender = request.body.gender; 
+					person.age = request.body.age; 
+					person.ethnicity = request.body.ethnicity; 
+					person.location.state = request.body.state; 
+					person.location.city = request.body.city; 
+					person.dietaryRestrictions.vegetarian = request.body.vegetarian;
+					person.dietaryRestrictions.vegan = request.body.vegan; 
+					person.dietaryRestrictions.kosher = request.body.kosher; 
+					person.dietaryRestrictions.halal = request.body.halal; 
+					person.dietaryRestrictions.nutAllergies = request.body.nutAllergies; 
+		 			person.save(function(err) {
+						if (err) {
+							console.log(err); 
+						}
+						else{
+							console.log(person); 
+							response.send({data: person});
+
+						}
+		 
+					});
+
 
 				}
- 
-			});
-
+				
+			}); 
 
 		}
-		
-	}); 
+
 	}
 }); 
 
@@ -88,6 +96,8 @@ router.get('/signup', function(req, res, next){
 });
 
 router.post('/signup', function(req, res, next){
+	var space = new RegExp(" "); 
+	var forwardslash = new RegExp("/");
 	console.log('got to post');
 	var username = req.body.username;
 	var password = req.body.password;
@@ -97,7 +107,11 @@ router.post('/signup', function(req, res, next){
 	// find if user already exists by checking username and email
 	// if already exists some error message
 	// if not, add user to database and sign in
-	User.findOne({username:username}, function(err, user){
+	if (/<[a-z][\s\S]*>/i.test(req.body.username) || /<[a-z][\s\S]*>/i.test(req.body.password) || /<[a-z][\s\S]*>/i.test(req.body.name) || space.test(req.body.username) || space.test(req.body.password) || forwardslash.test(req.body.name) || forwardslash.test(req.body.username) || forwardslash.test(req.body.password)) {
+ 		return res.send({message: "Not a Valid Input"}); 
+	}
+	else{
+		User.findOne({username:username}, function(err, user){
 		console.log('got here');
 		if(err){
 			console.log(err);
@@ -124,6 +138,8 @@ router.post('/signup', function(req, res, next){
 		
 	});
 
+	}
+	
 });
 
 router.get('/auth/google', passport.authenticate('google', {scope:['profile email']}));
@@ -248,73 +264,81 @@ router.post('/', function(req, res, next){
 		console.log('got to post review');
 		console.log('check login');
 		console.log(req.session.user);
+		var forwardslash = new RegExp("/");
 		if(!req.user){
 			console.log('no user');
 			return res.send({loggedIn:false});
 		}
-		console.log(req.body.content);
-		var reviewObj = {
-			content:req.body.content,
-			rating:req.body.rating,
-			author:req.user,
-			restaurantId:req.body.id
+		else if (/<[a-z][\s\S]*>/i.test(req.body.rating) || /<[a-z][\s\S]*>/i.test(req.body.content)  || /\D/.test(req.body.rating) || forwardslash.test(req.body.content) || forwardslash.test(req.body.rating)) {
+			return res.send({loggedIn: true, message: "Not a Valid Input"}); 
+		}
+		else{
+			console.log(req.body.content);
+			var reviewObj = {
+				content:req.body.content,
+				rating:req.body.rating,
+				author:req.user,
+				restaurantId:req.body.id
 
-		};
-		Review.create(reviewObj, function(err, review){
-			if(err){
-				console.log(err);
-				return res.send({loggedIn:true, message:'error'});
-			}
-			if(review){
-				Restaurant.findOne({id:req.body.id}, function(err, restaurant){
-					if(err){
-						console.log(err);
-						res.send({loggedIn:true, message:'error'});
-					}
-					else if(restaurant){
-						restaurant.reviews.push(review);
-						restaurant.save(function(err){
-							if(err){
-								console.log(err);
-								res.send({loggedIn:true, message:'error'});
-							}
-							else{
-								res.send({loggedIn:true, message:'success'});
-							}
+			};
+			Review.create(reviewObj, function(err, review){
+				if(err){
+					console.log(err);
+					return res.send({loggedIn:true, message:'error'});
+				}
+				if(review){
+					Restaurant.findOne({id:req.body.id}, function(err, restaurant){
+						if(err){
+							console.log(err);
+							res.send({loggedIn:true, message:'error'});
+						}
+						else if(restaurant){
+							restaurant.reviews.push(review);
+							restaurant.save(function(err){
+								if(err){
+									console.log(err);
+									res.send({loggedIn:true, message:'error'});
+								}
+								else{
+									res.send({loggedIn:true, message:'success'});
+								}
 
-						});
+							});
 
 
-					}
-					else{
-						Restaurant.create({id:req.body.id, name:req.body.name}, function(err, newRestaurant){
-							if(err){
-								console.log(err);
-								return res.send({loggedIn:true, message:'error'});
-							}
-							else if(newRestaurant){
-								newRestaurant.reviews.push(review);
-								newRestaurant.save(function(err){
-									if(err){
-										console.log(err);
-										res.send({loggedIn:true,message:"error"});
-									}
-									else{
-										res.send({loggedIn:true, message:'success'});
+						}
+						else{
+							Restaurant.create({id:req.body.id, name:req.body.name}, function(err, newRestaurant){
+								if(err){
+									console.log(err);
+									return res.send({loggedIn:true, message:'error'});
+								}
+								else if(newRestaurant){
+									newRestaurant.reviews.push(review);
+									newRestaurant.save(function(err){
+										if(err){
+											console.log(err);
+											res.send({loggedIn:true,message:"error"});
+										}
+										else{
+											res.send({loggedIn:true, message:'success'});
 
-									}
-								});
-							}
+										}
+									});
+								}
 
-						});
-					}
+							});
+						}
 
-				});
-			}
+					});
+				}
 
-		});
+			});
 
-	}
+		}
+
+		}
+		
 	if(req.body.viewReview){
 		console.log("request user");
 		console.log(req.user);

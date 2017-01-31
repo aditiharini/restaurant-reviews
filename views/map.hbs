@@ -86,12 +86,50 @@
       </div>
     </script>
 
+    <!-- <div class = 'navbar navbar-default' id="navigation">
+      <div class="navbar-header">
+        <a class='navbar-brand'>Restau-Rant</a>
+      </div>
+      <div id = "search" class='navbar-form navbar-left'>
+        <input id="pac-input" class="controls" type="text" placeholder='Search for restaurants (e.g. "clover mit")'></input> <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button> 
+      </div>
+      <ul id= "navbarList" class = 'nav navbar-nav navbar-right'>
+      <li id = "navbarAbout"><a href = "#" data-toggle = "modal" data-target = "#about"> About </a></li> 
+        {{#if loggedIn}}
+        <li class="dropdown"> -->
+          <!-- <a class="dropdown-toggle" type="button" data-toggle="dropdown">Menu<span class="caret"></span></a> -->
+          <!-- <ul class="dropdown-menu"> -->
+     <!--    <li id='navbarProfile'> <a href="#" data-toggle="modal" data-target = "#profile" onclick = "LoadProfile()"> Profile </a></li>
+        <li id= 'navbarManageReviews'><a href = "#" data-toggle="modal" data-target ="#manageReviewsModal"> Manage Reviews </a></li>
+        <li id = 'navbarLogout'> <a  href="/logout"> Log Out </a> </li> -->
+          <!-- </ul> -->
+        <!-- </li> -->
+   <!--      <div class="dropdown col-md-1 background-color: green" id="menu">
+          <button class="btn btn-primary dropdown-toggle background-color: green" type="button" data-toggle="dropdown">Menu
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li id='navbarProfile'> <a href="#" data-toggle="modal" data-target = "#profile" onclick = "LoadProfile()"> Profile </a></li>
+            <li id = "navbarAbout"><a href = "#" data-toggle = "modal" data-target = "#about"> About </a></li>
+            <li id = 'navbarLogout'> <a  href="/logout"> Log Out </a> </li>
+          </ul>
+        </div> -->
+      <!--   {{else}}
+        <li id = "navbarAbout"><a href = "#" data-toggle = "modal" data-target = "#about"> About </a></li>
+        <li id= 'navbarLogin'> <a href="#" data-toggle="modal" data-target="#loginModal" > Log in/Register </a></li>
+        {{/if}}
+        </ul>
+      </div> -->
+
     <nav class = 'navbar navbar-static top' id="navigation">
+      <div class='navbar-header'>
+        <li><a class='navbar-brand'>Restau-Rant</a></li>
+      </div>
       <div id="search">
         <input id="pac-input" class="controls" type="text" placeholder='Search for restaurants (e.g. "clover mit")'></input> 
         <button class = 'btn btn-success' type = 'submit' onclick="search()">Search</button> 
       </div>
       <ul id= "navbarList" class = 'nav navbar-nav navbar-right'> 
+        <li id = "navbarAbout"><a href = "#" data-toggle = "modal" data-target = "#about"> About </a></li>
       {{#if loggedIn}}
         <li id='navbarProfile'> <a href="#" data-toggle="modal" data-target = "#profile" > Profile </a></li>
         <li id= 'navbarManageReviews'><a href = "#" data-toggle="modal" data-target ="#manageReviewsModal"> Manage Reviews </a></li>
@@ -256,7 +294,23 @@
         </div>
       </div>
     </div>
-
+    <div id='about' class = 'modal fade' role='dialog'> 
+     <div class='modal-dialog' role='document'>
+        <div class = 'modal-content'>
+          <div class='modal-header'>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class='modal-title' id="AboutTitle" style="float: center">Welcome to Restau-Rant!</h2>
+          </div>
+           <div class='modal-body'>
+           <hr>
+              <fieldset>
+              <h4> Search for a restaurant  <h4> <br>
+              <h4> Register to view personalized reviews. <h4>
+              </fieldset>
+          </div>
+      </div>
+    </div>
+    </div>
 
     <div id="profile" class = "modal fade" role = "dialog">
       <div class="modal-dialog" role="document">
@@ -266,8 +320,12 @@
             <h2 class = "modal-title" id = "profileTitle"> Settings </h2>
             </div>
           <div class = "modal-body">
-          <fieldset> 
-          <label>Location </label><br>
+           <div hidden id = 'agecityalert' class='alert alert-danger'>
+                  <!-- <strong>Error!</strong> {{message}} -->
+                </div>
+          <hr class="colorgraph">
+          <fieldset>
+          <h4>Location </h4>
                 <label> State </label>
                 <select class="custom-select" id = "State">
                 <option id = "selected" select></option>
@@ -322,14 +380,12 @@
                   <option value="WI">WI</option>
                   <option value="WY">WY</option>
               </select>
-
-              <br> 
-
-              <label> City <input id = "city" type = "text"> </input></label> <br><br>
-                <label> Age <input id='age' type = 'text' oninput = 'ValidateAge()'></input></label> <br><br>
-
-              <label> Gender </label> <input type="radio" name="gender" value="male" id = "male"> Male <input type="radio" name="gender" value="female" id= "female"> Female<br> <br>
-
+              <br>
+              <label> City <input id = "city" type = "text"> </input></label> <br> <br> 
+                <h4> Age</h4>
+                <input id='age' type = 'text'></input> <br> <br> 
+              <h4> Gender </h4> <input type="radio" name="gender" value="male" id = "male"> Male <input type="radio" name="gender" value="female" id= "female"> Female<br> <br>
+              <h4> Ethnicity </h4>
               <select class="custom-select" id = "Ethnic">
                 <option id = "selected" select></option>
                   <option value="White">White</option>
@@ -341,25 +397,26 @@
                   <option value="Native American or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
                   <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
               </select>
-
               
-              <br> 
-
-              <h3> Dietary Restrictions </h3>
+              <br> <br>
+              <h4> Dietary Restrictions </h4>
                 <label>Vegetarian <input type = 'checkbox' id = 'vegetarian' value = 'vegetarian' id = "vegetarian"></input></label> <br> 
                 <label> Vegan <input type = 'checkbox' id = 'vegan' value = 'vegan' id = "vegan"></input></label> <br>
                 <label> Kosher<input type = 'checkbox' id = 'kosher' value = 'kosher' id = "kosher"></input></label> <br>
               <label> Halal<input type = 'checkbox' id = 'halal' value = 'halal' id = "halal"></input></label><br>
               <label> Nut Allergies<input type = 'checkbox' id = 'nutAllergies' value = 'nutAllergies' id = "nutAllergies"></input></label> <br> <br> <br> 
-
               <div class="col-xs-6 col-sm-6 col-md-6">
                       <button type="submit" class="btn btn-lg btn-success btn-block" id="submit" onclick = "save()">Save to Profile</button>
                 </div>
-
-            </fieldset>
+                </fieldset>
           </div>
           </div>
           </div>
           </div>
 
+
+
+    
+</body>
+</html>
 

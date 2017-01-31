@@ -1,4 +1,4 @@
-      ul {
+     ul {
         list-style-type: none; 
         margin: 0;
         padding: 0;
@@ -8,7 +8,6 @@
         float: right;
         display: inline;
         margin-right:5px;
-        /*margin-top:0px;*/
       }
       li a {
         display: block;
@@ -16,9 +15,9 @@
         text-align: center;
         text-decoration: none;
       }
-      li a:hover {
+     /* li a:hover {
         background-color: #111;
-      }
+      }*/
       #search {
         float: left;
         height: 48px;
@@ -33,7 +32,77 @@
         width:100%;
         border-radius: 0px;
 
-        /*margin-left:0;*/
-        /*margin-right:0;*/
-        /*margin:0;*/
+   
       }
+      .navbar-brand{
+        font-size: 35px;
+      }
+      .navbar-brand:hover{
+        color:white;
+
+      }
+
+
+
+/* ul {
+        float: right;
+        list-style-type: none; 
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        float: right;
+        display: inline;
+      }
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+      }
+      li a:hover {
+        background-color: #111;
+      }
+      #search {
+        text-align: center;
+        height: 48px;
+        display: inline-block; 
+      }
+      .navbar{
+        background-color:green;
+        padding:0;
+        height: 48px;
+        margin-bottom:0;
+        position: absolute;
+        display:inline;
+        z-index: 11;
+        width:100%;
+      }
+
+        #about {
+          text-align: center; 
+        }
+        .clickButton {
+          text-align: center;
+        }
+        #menu{
+          background-color: green; 
+          display: inline;
+          float: right; 
+          text-align: right; 
+          position: absolute; 
+        }
+        #menu ul li {
+          float: none; 
+        }
+        #menu ul {
+          position: absolute; 
+        }
+        .dropdown-menu {
+          min-width: 0px;
+        }
+        #welcometitle{
+          float: left;          
+          text-align: left;
+          color: white;
+        }*/

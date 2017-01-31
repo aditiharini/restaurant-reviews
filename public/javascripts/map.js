@@ -247,10 +247,12 @@
       });
       // need to check if user is logged in
       $('#submitReview').click(function(){
-        $('#reviewContent').val('');
+        $('#writeAReviewAlert').empty();
+        $('#writeAReviewAlert').hide();
         var id = $(this).attr('id');
         console.log(id);
         var content = $('#reviewContent').val();
+        $('#reviewContent').val('');
         var rating;
           if($('#star1').is(':checked')){
             rating=1;
@@ -267,6 +269,7 @@
           if($('#star5').is(':checked')){
             rating=5;
           }
+          $('input:radio[name=rating]:checked').prop('checked', false);
         if(currentSubmitReviewAjax){
           currentSubmitReviewAjax.abort();
         }
@@ -294,6 +297,12 @@
               alert("please try again");
               return;
             }
+            if (res.message==='Not a Valid Input'){
+                console.log('got to invalid input'); 
+                $('#writeAReviewAlert').append('<p>' + res.message + '</p>');
+                $('#writeAReviewAlert').show();
+                return;
+              }
 
           }
 
