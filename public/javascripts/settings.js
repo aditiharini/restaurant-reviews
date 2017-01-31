@@ -7,7 +7,8 @@ function LoadProfile() {
           data: {id: "ethnicity"}, 
           dataType: 'json', 
           success: function(data) {
-            if (res.message ==='success') {
+            console.log("got back to settings ajax");
+            if (data.message ==='success') {
                var user = data.data; 
               var ethnicity = user.ethnicity; 
               var city = user.location.city; 
@@ -17,21 +18,21 @@ function LoadProfile() {
               $("#State").val(state); 
               $("#city").val(city); 
               $("#age").val(age); 
-              if (user.gender == "female") {
-                  document.getElementById("male").checked = false; 
-                  document.getElementById("female").checked = true; 
-                }
-                if (user.gender == "male") {
-                  document.getElementById("male").checked = true; 
-                  document.getElementById("female").checked = false; 
-                }
+              // if (user.gender == "female") {
+              //     document.getElementById("male").checked = false; 
+              //     document.getElementById("female").checked = true; 
+              //   }
+              //   if (user.gender == "male") {
+              //     document.getElementById("male").checked = true; 
+              //     document.getElementById("female").checked = false; 
+              //   }
                 $("#vegetarian").prop('checked', user.dietaryRestrictions.vegetarian); 
                 $("#vegan").prop('checked', user.dietaryRestrictions.vegan); 
                 $("#kosher").prop('checked', user.dietaryRestrictions.kosher); 
                 $("#halal").prop('checked', user.dietaryRestrictions.halal);
                 $("#nutAllergies").prop('checked', user.dietaryRestrictions.nutAllergies); 
             } else {
-              $('#agecityalert').append('<p>' + res.message + '</p>');
+              $('#agecityalert').append('<p>' + data.message + '</p>');
               $('#agecityalert').show();
             }
            

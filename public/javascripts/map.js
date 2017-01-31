@@ -338,6 +338,20 @@
 
       }
 
+      $(document).ready(function(){
+        $('#search').keypress(function(e){
+          if(e.keyCode==13){
+            $('#searchButton').click();
+
+          }
+        });
+
+        $('#viewReviews').click(function(){
+          $(this).fadeOut();
+        });
+
+      });
+
 
 
       

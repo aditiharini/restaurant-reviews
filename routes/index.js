@@ -36,21 +36,27 @@ router.get('/login', function(req, res, next){
 
 
 router.post('/settings', function(request, response, next) {
+	console.log('got to settings');
 
 	if (request.body.id == "ethnicity") {
+		if(!request.user){
+			console.log('got to no user');
+			return response.send({loggedIn:false, message:'not logged in'});
+		}
 		User.findOne({_id:request.user._id}, function(err, user){
 		if(err){
+			response.send({loggedIn:true, message:"error"});
 			throw err;
 		}
 		else {
-			response.send({data: user});
+			response.send({loggedIn:true, message:"success", data: user});
 		}
 
 		});
 	}
 	else if (request.body.id == "buttoninput"){
-		var space = new RegExp(" "); 
-		if (/\D/.test(request.body.age)||/\d/.test(request.body.city)||/<[a-z][\s\S]*>/i.test(request.body.age) || /<[a-z][\s\S]*>/i.test(request.body.city) || space.test(request.body.age)) {
+		
+		if (/\D/.test(request.body.age)||/\d/.test(request.body.city)||/<[a-z][\s\S]*>/i.test(request.body.age) || /<[a-z][\s\S]*>/i.test(request.body.city) || /^\s*$/.test(request.body.city) || /^\s*$/.test(request.body.age)) {
 			response.send({message: 'Not a Valid Input', data: null}); 
 		} 
 		else{
@@ -59,7 +65,7 @@ router.post('/settings', function(request, response, next) {
 					throw err; 
 				}
 				if (person) {
-					person.gender = request.body.gender; 
+					// person.gender = request.body.gender; 
 					person.age = request.body.age; 
 					person.ethnicity = request.body.ethnicity; 
 					person.location.state = request.body.state; 
@@ -75,7 +81,7 @@ router.post('/settings', function(request, response, next) {
 						}
 						else{
 							console.log(person); 
-							response.send({data: person});
+							response.send({message:"success", data: person});
 
 						}
 		 
@@ -91,9 +97,6 @@ router.post('/settings', function(request, response, next) {
 	}
 }); 
 
-router.get('/signup', function(req, res, next){
-	res.render('signup', {message:req.flash('signupMessage')});
-});
 
 router.post('/signup', function(req, res, next){
 	var space = new RegExp(" "); 
@@ -107,7 +110,7 @@ router.post('/signup', function(req, res, next){
 	// find if user already exists by checking username and email
 	// if already exists some error message
 	// if not, add user to database and sign in
-	if (/<[a-z][\s\S]*>/i.test(req.body.username) || /<[a-z][\s\S]*>/i.test(req.body.password) || /<[a-z][\s\S]*>/i.test(req.body.name) || space.test(req.body.username) || space.test(req.body.password) || forwardslash.test(req.body.name) || forwardslash.test(req.body.username) || forwardslash.test(req.body.password)) {
+	if (username.length===0||password.length===0||name.length===0||/<[a-z][\s\S]*>/i.test(req.body.username) || /<[a-z][\s\S]*>/i.test(req.body.password) || /<[a-z][\s\S]*>/i.test(req.body.name) || /^\s*$/.test(req.body.username) || /^\s*$/.test(req.body.password) || forwardslash.test(req.body.name) || forwardslash.test(req.body.username) || forwardslash.test(req.body.password)) {
  		return res.send({message: "Not a Valid Input"}); 
 	}
 	else{
@@ -189,7 +192,7 @@ router.post('/reviews', function(req, res, next){
 						Review.remove({_id:req.body.id}, function(err){
 							if(err){
 								console.log(err);
-								return;
+								return res.send({message:"error"});
 							}
 							var allReviews = restaurant.reviews;
 							if(allReviews.length==1){

@@ -1,7 +1,7 @@
       #viewReviews{
         position:absolute;
         overflow:auto;
-        height:93%;
+        height:95%;
         z-index: 10;
         top:48px;
         background:#dff0d8;

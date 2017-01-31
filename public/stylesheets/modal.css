@@ -1,5 +1,6 @@
       .modal-content{
         border-radius:0;
+        border:3px solid #5cb85c;
       }
 
       .modal-header{
@@ -11,8 +12,12 @@
       }
       hr{
         margin-top:10px;
+        border-top: 3px solid #dff0d8;
       }
 
       #manageReivewsModalBody{
         padding-bottom:0px;
+      }
+      #settingsLine{
+        margin-bottom: 5px;
       }

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  LoadProfile();
   $('#loginButton').click(function(){
             $('#loginAlert').empty();
             $('#loginAlert').hide();
